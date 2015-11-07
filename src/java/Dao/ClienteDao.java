@@ -7,7 +7,28 @@ package Dao;
 
 import Model.Cliente;
 import Util.HibernateUtil;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
 import org.hibernate.Session;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -29,5 +50,44 @@ public class ClienteDao {
             session.close();
 
         }
+    }
+
+    public List<Cliente> listar() {
+        session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            List<Cliente> lista = session.createQuery("from Cliente").list();
+            session.getTransaction().commit();
+            return lista;
+        } finally {
+            session.close();
+
+        }
+    }
+
+    public DefaultStreamedContent emitir() throws JRException {
+
+        System.out.println("GERANDO RELATORIO...");
+
+        List<Cliente> lista = listar();
+        InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/report1.jrxml");
+        JasperReport report = JasperCompileManager.compileReport(relatorioStream);
+        JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(lista));
+        
+        ByteArrayOutputStream Teste = new ByteArrayOutputStream();
+        JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
+        //JRExporter exporter = new net.sf.jasperreports.engine.export.JRHtmlExporter();
+        //JRExporter exporter = new net.sf.jasperreports.engine.export.JRXlsExporter();
+        //JRExporter exporter = new net.sf.jasperreports.engine.export.JRXmlExporter();
+        //JRExporter exporter = new net.sf.jasperreports.engine.export.JRCsvExporter();
+
+        //exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, pdfFile);
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, Teste);
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+        exporter.exportReport();
+
+        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()),"application/pdf", "Cadastro de Clientes.pdf");
+      
     }
 }

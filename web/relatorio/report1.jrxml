@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8aa6a12e-0036-4c4b-8718-5a028a9ea6e6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     cliente.`idcliente` AS cliente_idcliente,
+     cliente.`nome` AS cliente_nome,
+     cliente.`endereco` AS cliente_endereco,
+     cliente.`email` AS cliente_email,
+     cliente.`bairro` AS cliente_bairro,
+     cliente.`cidade` AS cliente_cidade,
+     cliente.`cep` AS cliente_cep,
+     cliente.`estado` AS cliente_estado,
+     cliente.`fone` AS cliente_fone,
+     cliente.`celular` AS cliente_celular,
+     cliente.`cpf` AS cliente_cpf,
+     cliente.`obs` AS cliente_obs,
+     cliente.`rg` AS cliente_rg,
+     cliente.`orgaorg` AS cliente_orgaorg,
+     cliente.`nascimento` AS cliente_nascimento,
+     cliente.`desde` AS cliente_desde,
+     cliente.`cnpj` AS cliente_cnpj,
+     cliente.`insest` AS cliente_insest,
+     cliente.`sexo` AS cliente_sexo,
+     cliente.`profissao` AS cliente_profissao,
+     cliente.`empresa` AS cliente_empresa,
+     cliente.`foneemp` AS cliente_foneemp,
+     cliente.`renda` AS cliente_renda,
+     cliente.`referencia` AS cliente_referencia,
+     cliente.`foneref` AS cliente_foneref
+FROM
+     `cliente` cliente]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="endereco" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="22" width="100" height="20" uuid="8b9be040-2b5e-4cfe-b82c-bcf1b226b00c"/>
+				<text><![CDATA[nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="22" width="183" height="20" uuid="c097db2a-2646-4846-9868-3055fc9312d4"/>
+				<text><![CDATA[endereco]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="23" y="25" width="100" height="20" uuid="0b972b0b-fb94-40f7-a19c-a95b77dc8969"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="25" width="183" height="20" uuid="3130a238-42c0-413b-b38a-e7f1687b7777"/>
+				<textFieldExpression><![CDATA[$F{endereco}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

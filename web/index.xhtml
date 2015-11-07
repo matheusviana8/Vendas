@@ -1,12 +1,26 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         Pagina inicial
+        <p:dataTable value="#{clienteController.listar()}"
+                     var="item">
+            <p:column>
+                <h:outputText value="#{item.nome}" />
+            </p:column>
+
+        </p:dataTable>
+        <h:form>
+            <h:commandLink value="emitir relatorio" action="#{clienteController.emitir()}"/>
+            <p:commandButton id="exportar1" value="PDF" ajax="false">
+                <p:fileDownload value="#{clienteController.emitir()}" />
+            </p:commandButton>
+        </h:form>
         <br />
         <h:link outcome="/cadastro/cliente.xhtml" value="Página de Cadastro de Cliente" />
     </h:body>
