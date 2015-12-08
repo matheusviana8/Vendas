@@ -8,10 +8,13 @@
     </h:head>
     <h:body>
         Pagina inicial
-        <p:dataTable value="#{clienteController.listar()}"
+        <p:dataTable value="#{vendaControle.listar()}"
                      var="item">
             <p:column>
-                <h:outputText value="#{item.nome}" />
+                <h:outputText value="#{item.dataVenda}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{item.idCliente.nome}" />
             </p:column>
 
         </p:dataTable>
@@ -19,13 +22,6 @@
             <h:commandLink value="emitir relatorio" action="#{clienteController.emitir()}"/>
             <p:commandButton id="exportar1" value="PDF" ajax="false">
                 <p:fileDownload value="#{clienteController.emitir()}" />
-            </p:commandButton>
-        </h:form>
-        
-         <h:form>
-             <h:commandLink value="emitir relatorio Venda" action="#{vendaControle.emitir()}"/>
-            <p:commandButton id="exportar1" value="PDF" ajax="false">
-                <p:fileDownload value="#{vendaControle.emitir()}" />
             </p:commandButton>
         </h:form>
         <br />

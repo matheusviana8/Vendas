@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/vendas</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">admin</property>
-        <property name="hibernate.current_session_context_class">thread</property>
-        <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
-    
-        <property name="hibernate.c3p0.min_size">1</property>
-        <property name="hibernate.c3p0.max_size">10</property>
-        <property name="hibernate.c3p0.acquire_increment">1</property>
-        <property name="hibernate.c3p0.idle_test_period">3000</property>
-        <property name="hibernate.c3p0.max_statements">50</property>
-        <property name="hibernate.c3p0.timeout">1800</property>
-        <!--        Mínimo e máximo de conexões de 10 à 20 respectivamente;
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/vendas</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">admin</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</property>
+    <property name="hibernate.c3p0.min_size">1</property>
+    <property name="hibernate.c3p0.max_size">10</property>
+    <property name="hibernate.c3p0.acquire_increment">1</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.timeout">1800</property>
+    <!--        Mínimo e máximo de conexões de 10 à 20 respectivamente;
         Ao requisitar uma nova conexão 5 outras serão criadas mesmo se não forem utilizadas sequencialmente mas elas ficam guardadas no pool;
         Tempo para validação de inatividade, no caso de 3000ms para o descarte de conexão;
         Número de statements que serão adicionados no cache. Por padrão é desabilitado;
         Tempo que as conexões irão expirar.-->
-    
-        <mapping class="Model.Venda"/>
-        <mapping class="Model.Fornecedor"/>
-        <mapping class="Model.Cliente"/>
-        <mapping class="Model.DVenda"/>
-        <mapping class="Model.Produto"/>
-    </session-factory>
+    <mapping class="Model.Venda"/>
+    <mapping class="Model.Fornecedor"/>
+    <mapping class="Model.Cliente"/>
+    <mapping class="Model.Produto"/>
+    <mapping class="Model.Setores"/>
+  </session-factory>
 </hibernate-configuration>

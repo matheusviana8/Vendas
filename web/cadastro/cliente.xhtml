@@ -17,16 +17,16 @@
 
         <h:form>
             <p:panelGrid columns="2">
-                <p:outputLabel value="Nome:"/>
-                <p:inputText value="#{clienteController.cliente.nome}" /> 
+           <p:outputLabel for="city" value="Cliente: " />
+           <p:selectOneMenu id="city" value="#{vendaControle.venda.idCliente}" effect="fold" editable="true">
+            <f:selectItem itemLabel="Selecione o cliente" itemValue="" />
+            <f:selectItems value="#{clienteController.listar()}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome}" />
+        </p:selectOneMenu>
 
-                <p:outputLabel value="Bairro:"/>
-                <p:inputText value="#{clienteController.cliente.bairro}" /> 
-
-                <p:outputLabel value="Estado:"/>
-                <p:inputText value="#{clienteController.cliente.estado}" maxlength="2"/>
+            <p:outputLabel value="Venda:"/>
+            <p:calendar value="#{vendaControle.venda.dataVenda}" />
             </p:panelGrid>
-            <p:commandButton action="#{clienteController.cadastrar()}" value="Salvar"/>
+            <p:commandButton action="#{vendaControle.cadastrar()}" value="Salvar"/>
         </h:form>
 
     </h:body>
