@@ -15,19 +15,45 @@
 
     <h:body>
 
+        <p:dataTable value="#{clienteController.listar()}"
+                     var="item">
+            <f:facet name="header">
+                Lista de Clientes
+            </f:facet>
+            <p:column headerText="Nome">
+                <h:outputText value="#{item.nome}" />
+            </p:column>
+
+        </p:dataTable>
+
+        <p:separator/>
+
+        <h:form>
+            <p:commandButton id="exportar1" value="Emitir Relatório" ajax="false">
+                <p:fileDownload value="#{clienteController.emitir()}" />
+            </p:commandButton>
+        </h:form>
+
+        <p:separator/>
+
         <h:form>
             <p:panelGrid columns="2">
-           <p:outputLabel for="city" value="Cliente: " />
-           <p:selectOneMenu id="city" value="#{vendaControle.venda.idCliente}" effect="fold" editable="true">
-            <f:selectItem itemLabel="Selecione o cliente" itemValue="" />
-            <f:selectItems value="#{clienteController.listar()}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome}" />
-        </p:selectOneMenu>
+                <p:outputLabel value="Nome:"/>
+                <p:inputText value="#{clienteController.cliente.nome}" /> 
 
-            <p:outputLabel value="Venda:"/>
-            <p:calendar value="#{vendaControle.venda.dataVenda}" />
+                <p:outputLabel value="Bairro:"/>
+                <p:inputText value="#{clienteController.cliente.bairro}" /> 
+
+                <p:outputLabel value="Estado:"/>
+                <p:inputText value="#{clienteController.cliente.estado}" maxlength="2"/>
             </p:panelGrid>
-            <p:commandButton action="#{vendaControle.cadastrar()}" value="Salvar"/>
+            <p:commandButton action="#{clienteController.cadastrar()}" value="Salvar"/>
         </h:form>
+
+        <p:separator/>
+
+        <h:link outcome="/cadastro/vendas.xhtml" value="Página de Cadastro de Vendas" /> <br />
+        <h:link outcome="/index.xhtml" value="Página Inicial" />
 
     </h:body>
 

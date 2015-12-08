@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Venda.findById", query = "SELECT v FROM Venda v WHERE v.id = :id"),
     @NamedQuery(name = "Venda.findByDataVenda", query = "SELECT v FROM Venda v WHERE v.dataVenda = :dataVenda")})
 public class Venda implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +52,8 @@ public class Venda implements Serializable {
     private Produto idProduto;
 
     public Venda() {
+        idCliente = new Cliente();
+        idProduto = new Produto();
     }
 
     public Venda(Integer id) {
@@ -113,5 +116,5 @@ public class Venda implements Serializable {
     public String toString() {
         return "Model.Venda[ id=" + id + " ]";
     }
-    
+
 }
