@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Modelo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -281,7 +281,7 @@ public class Fornecedor implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.Fornecedor[ idfornecedor=" + idfornecedor + " ]";
+        return "Modelo.Fornecedor[ idfornecedor=" + idfornecedor + " ]";
     }
     
 }

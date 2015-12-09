@@ -5,7 +5,7 @@
  */
 package Util;
 
-import Model.Cliente;
+import Modelo.Cliente;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 /**

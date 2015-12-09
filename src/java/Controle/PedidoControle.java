@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controle;
 
-import Dao.VendaDao;
-import Model.Cliente;
-import Model.Venda;
+import Dao.PedidoDao;
+import Modelo.Cliente;
+import Modelo.Pedido;
 import Util.HibernateUtil;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -21,44 +21,44 @@ import org.primefaces.model.DefaultStreamedContent;
  */
 @ManagedBean
 @RequestScoped
-public class VendaControle {
+public class PedidoControle {
 
-    private Venda venda;
-    private List<Venda> vendas;
+    private Pedido pedido;
+    private List<Pedido> pedidos;
 
-    public VendaControle() {
-        venda = new Venda();
+    public PedidoControle() {
+        pedido = new Pedido();
     }
 
     //Métodos dos botões 
     public void cadastrar() {
-        new VendaDao().inserir(venda);
+        new PedidoDao().inserir(pedido);
     }
     
-    public List<Venda> listar() {
-        return vendas = new VendaDao().listar();
+    public List<Pedido> listar() {
+        return pedidos = new PedidoDao().listar();
     }
     
     public DefaultStreamedContent emitir() throws JRException{
         
-        return new VendaDao().emitir();
+        return new PedidoDao().emitir();
     }
     
 
-    public Venda getVenda() {
-        return venda;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setVenda(Venda venda) {
-        this.venda = venda;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
-    public List<Venda> getVendas() {
-        return vendas;
+    public List<Pedido> getPedidos() {
+        return pedidos;
     }
 
-    public void setVendas(List<Venda> vendas) {
-        this.vendas = vendas;
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
     
     

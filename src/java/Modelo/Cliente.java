@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Modelo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -139,7 +139,7 @@ public class Cliente implements Serializable {
     @Column(name = "foneref")
     private String foneref;
     @OneToMany(mappedBy = "idCliente")
-    private List<Venda> vendaList;
+    private List<Pedido> pedidoList;
 
     public Cliente() {
     }
@@ -349,12 +349,12 @@ public class Cliente implements Serializable {
     }
 
     @XmlTransient
-    public List<Venda> getVendaList() {
-        return vendaList;
+    public List<Pedido> getPedidoList() {
+        return pedidoList;
     }
 
-    public void setVendaList(List<Venda> vendaList) {
-        this.vendaList = vendaList;
+    public void setPedidoList(List<Pedido> pedidoList) {
+        this.pedidoList = pedidoList;
     }
 
     @Override
@@ -379,7 +379,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.Cliente[ id=" + id + " ]";
+        return "Modelo.Cliente[ id=" + id + " ]";
     }
     
 }

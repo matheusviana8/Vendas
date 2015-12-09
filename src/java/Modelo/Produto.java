@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Modelo;
 
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -30,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Produto.findAll", query = "SELECT p FROM Produto p"),
     @NamedQuery(name = "Produto.findById", query = "SELECT p FROM Produto p WHERE p.id = :id"),
+    @NamedQuery(name = "Produto.findBySku", query = "SELECT p FROM Produto p WHERE p.sku = :sku"),
     @NamedQuery(name = "Produto.findByDescricao", query = "SELECT p FROM Produto p WHERE p.descricao = :descricao"),
     @NamedQuery(name = "Produto.findByVlrcompra", query = "SELECT p FROM Produto p WHERE p.vlrcompra = :vlrcompra"),
     @NamedQuery(name = "Produto.findByVlrvenda", query = "SELECT p FROM Produto p WHERE p.vlrvenda = :vlrvenda"),
@@ -38,10 +40,13 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Produto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
+    @Size(max = 10)
+    @Column(name = "sku")
+    private String sku;
     @Size(max = 45)
     @Column(name = "descricao")
     private String descricao;
@@ -55,7 +60,7 @@ public class Produto implements Serializable {
     @Column(name = "critico")
     private Integer critico;
     @OneToMany(mappedBy = "idProduto")
-    private List<Venda> vendaList;
+    private List<ItemPedido> itemPedidoList;
 
     public Produto() {
     }
@@ -70,6 +75,14 @@ public class Produto implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getDescricao() {
@@ -113,12 +126,12 @@ public class Produto implements Serializable {
     }
 
     @XmlTransient
-    public List<Venda> getVendaList() {
-        return vendaList;
+    public List<ItemPedido> getItemPedidoList() {
+        return itemPedidoList;
     }
 
-    public void setVendaList(List<Venda> vendaList) {
-        this.vendaList = vendaList;
+    public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
+        this.itemPedidoList = itemPedidoList;
     }
 
     @Override
@@ -143,7 +156,7 @@ public class Produto implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.Produto[ id=" + id + " ]";
+        return "Modelo.Produto[ id=" + id + " ]";
     }
     
 }

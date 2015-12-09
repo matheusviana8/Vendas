@@ -5,7 +5,7 @@
  */
 package Dao;
 
-import Modelo.Cliente;
+import Modelo.Produto;
 import Util.HibernateUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,30 +26,33 @@ import org.primefaces.model.DefaultStreamedContent;
  *
  * @author MATHEUS
  */
-public class ClienteDao {
+public class ProdutoDao {
 
     private Session session;
 
-    public void inserir(Cliente cliente) {
+    public void salvar(Produto produto) {
+        System.out.println("dao salvar");
         session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             session.beginTransaction();
-            session.save(cliente);
+            session.save(produto);
             session.getTransaction().commit();
 
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             session.close();
 
         }
     }
 
-    public List<Cliente> listar() {
+    public List<Produto> listar() {
         session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             session.beginTransaction();
-            List<Cliente> lista = session.createQuery("from Cliente").list();
+            List<Produto> lista = session.createQuery("from Produto").list();
             session.getTransaction().commit();
             return lista;
         } finally {
@@ -62,11 +65,11 @@ public class ClienteDao {
 
         System.out.println("GERANDO RELATORIO...");
 
-        List<Cliente> lista = listar();
+        List<Produto> lista = listar();
         InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/report1.jrxml");
         JasperReport report = JasperCompileManager.compileReport(relatorioStream);
         JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(lista));
-        
+
         ByteArrayOutputStream Teste = new ByteArrayOutputStream();
         JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
         //JRExporter exporter = new net.sf.jasperreports.engine.export.JRHtmlExporter();
@@ -79,7 +82,7 @@ public class ClienteDao {
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
         exporter.exportReport();
 
-        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()),"application/pdf", "Cadastro de Clientes.pdf");
-      
+        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()), "application/pdf", "Cadastro de Produtos.pdf");
+
     }
 }

@@ -5,7 +5,7 @@
  */
 package Dao;
 
-import Model.Venda;
+import Modelo.Pedido;
 import Util.HibernateUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,16 +26,16 @@ import org.primefaces.model.DefaultStreamedContent;
  *
  * @author MATHEUS
  */
-public class VendaDao {
+public class PedidoDao {
 
     private Session session;
 
-    public void inserir(Venda venda) {
+    public void inserir(Pedido pedido) {
         session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             session.beginTransaction();
-            session.save(venda);
+            session.save(pedido);
             session.getTransaction().commit();
 
         } finally {
@@ -44,12 +44,12 @@ public class VendaDao {
         }
     }
 
-    public List<Venda> listar() {
+    public List<Pedido> listar() {
         session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             session.beginTransaction();
-            List<Venda> lista = session.createQuery("from Venda").list();
+            List<Pedido> lista = session.createQuery("from Pedido").list();
             session.getTransaction().commit();
             return lista;
         } finally {
@@ -62,8 +62,8 @@ public class VendaDao {
 
         System.out.println("GERANDO RELATORIO...");
 
-        List<Venda> lista = listar();
-        InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/Venda.jrxml");
+        List<Pedido> lista = listar();
+        InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/Pedido.jrxml");
         JasperReport report = JasperCompileManager.compileReport(relatorioStream);
         JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(lista));
         
@@ -79,7 +79,7 @@ public class VendaDao {
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
         exporter.exportReport();
 
-        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()),"application/pdf", "Cadastro de Vendas.pdf");
+        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()),"application/pdf", "Cadastro de Pedidos.pdf");
       
     }
 }

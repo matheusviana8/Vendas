@@ -3,23 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Modelo;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,36 +23,36 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author MATHEUS
  */
 @Entity
-@Table(name = "venda")
+@Table(name = "item_pedido")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Venda.findAll", query = "SELECT v FROM Venda v"),
-    @NamedQuery(name = "Venda.findById", query = "SELECT v FROM Venda v WHERE v.id = :id"),
-    @NamedQuery(name = "Venda.findByDataVenda", query = "SELECT v FROM Venda v WHERE v.dataVenda = :dataVenda")})
-public class Venda implements Serializable {
-
+    @NamedQuery(name = "ItemPedido.findAll", query = "SELECT i FROM ItemPedido i"),
+    @NamedQuery(name = "ItemPedido.findById", query = "SELECT i FROM ItemPedido i WHERE i.id = :id"),
+    @NamedQuery(name = "ItemPedido.findByQuantidade", query = "SELECT i FROM ItemPedido i WHERE i.quantidade = :quantidade"),
+    @NamedQuery(name = "ItemPedido.findByVlrUnitario", query = "SELECT i FROM ItemPedido i WHERE i.vlrUnitario = :vlrUnitario")})
+public class ItemPedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id")
     private Integer id;
-    @Column(name = "data_venda")
-    @Temporal(TemporalType.DATE)
-    private Date dataVenda;
-    @JoinColumn(name = "idCliente", referencedColumnName = "id")
+    @Column(name = "quantidade")
+    private Integer quantidade;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "vlrUnitario")
+    private Double vlrUnitario;
+    @JoinColumn(name = "idPedido", referencedColumnName = "id")
     @ManyToOne
-    private Cliente idCliente;
+    private Pedido idPedido;
     @JoinColumn(name = "idProduto", referencedColumnName = "id")
     @ManyToOne
     private Produto idProduto;
 
-    public Venda() {
-        idCliente = new Cliente();
-        idProduto = new Produto();
+    public ItemPedido() {
     }
 
-    public Venda(Integer id) {
+    public ItemPedido(Integer id) {
         this.id = id;
     }
 
@@ -68,20 +64,28 @@ public class Venda implements Serializable {
         this.id = id;
     }
 
-    public Date getDataVenda() {
-        return dataVenda;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setDataVenda(Date dataVenda) {
-        this.dataVenda = dataVenda;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
-    public Cliente getIdCliente() {
-        return idCliente;
+    public Double getVlrUnitario() {
+        return vlrUnitario;
     }
 
-    public void setIdCliente(Cliente idCliente) {
-        this.idCliente = idCliente;
+    public void setVlrUnitario(Double vlrUnitario) {
+        this.vlrUnitario = vlrUnitario;
+    }
+
+    public Pedido getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(Pedido idPedido) {
+        this.idPedido = idPedido;
     }
 
     public Produto getIdProduto() {
@@ -102,10 +106,10 @@ public class Venda implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Venda)) {
+        if (!(object instanceof ItemPedido)) {
             return false;
         }
-        Venda other = (Venda) object;
+        ItemPedido other = (ItemPedido) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -114,7 +118,7 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.Venda[ id=" + id + " ]";
+        return "Modelo.ItemPedido[ id=" + id + " ]";
     }
-
+    
 }

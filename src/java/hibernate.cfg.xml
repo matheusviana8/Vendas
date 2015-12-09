@@ -20,10 +20,10 @@
         Tempo para validação de inatividade, no caso de 3000ms para o descarte de conexão;
         Número de statements que serão adicionados no cache. Por padrão é desabilitado;
         Tempo que as conexões irão expirar.-->
-    <mapping class="Model.Venda"/>
-    <mapping class="Model.Fornecedor"/>
-    <mapping class="Model.Cliente"/>
-    <mapping class="Model.Produto"/>
-    <mapping class="Model.Setores"/>
+    <mapping class="Modelo.Cliente"/>
+    <mapping class="Modelo.Pedido"/>
+    <mapping class="Modelo.Produto"/>
+    <mapping class="Modelo.ItemPedido"/>
+    <mapping class="Modelo.Fornecedor"/>
   </session-factory>
 </hibernate-configuration>

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controle;
 
 import Dao.ClienteDao;
-import Model.Cliente;
+import Modelo.Cliente;
 import Util.HibernateUtil;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
