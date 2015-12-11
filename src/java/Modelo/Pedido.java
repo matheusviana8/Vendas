@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -151,5 +152,5 @@ public class Pedido implements Serializable {
     public String toString() {
         return "Modelo.Pedido[ id=" + id + " ]";
     }
-    
-}
+
+	}
