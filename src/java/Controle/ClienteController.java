@@ -24,9 +24,11 @@ public class ClienteController {
 
     private Cliente cliente;
     private List<Cliente> clientes;
+    private ClienteDao dao;
 
     public ClienteController() {
         cliente = new Cliente();
+        dao = new ClienteDao();
     }
 
     //Métodos dos botões 
@@ -34,6 +36,7 @@ public class ClienteController {
         new ClienteDao().inserir(cliente);
     }
     
+   
     public List<Cliente> listar() {
         return clientes = new ClienteDao().listar();
     }

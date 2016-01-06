@@ -6,10 +6,10 @@
 package Modelo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,12 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "pedido")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p"),
-    @NamedQuery(name = "Pedido.findById", query = "SELECT p FROM Pedido p WHERE p.id = :id"),
-    @NamedQuery(name = "Pedido.findByPrazoEntrega", query = "SELECT p FROM Pedido p WHERE p.prazoEntrega = :prazoEntrega"),
-    @NamedQuery(name = "Pedido.findByVlrTotal", query = "SELECT p FROM Pedido p WHERE p.vlrTotal = :vlrTotal"),
-    @NamedQuery(name = "Pedido.findByVlrDesconto", query = "SELECT p FROM Pedido p WHERE p.vlrDesconto = :vlrDesconto"),
-    @NamedQuery(name = "Pedido.findByData", query = "SELECT p FROM Pedido p WHERE p.data = :data")})
+    @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p")})
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,11 +53,11 @@ public class Pedido implements Serializable {
     @Column(name = "data")
     @Temporal(TemporalType.DATE)
     private Date data;
-    @OneToMany(mappedBy = "idPedido")
-    private List<ItemPedido> itemPedidoList;
-    @JoinColumn(name = "idCliente", referencedColumnName = "id")
+    @JoinColumn(name = "cliente", referencedColumnName = "id")
     @ManyToOne
-    private Cliente idCliente;
+    private Cliente cliente;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
+    private List<DetalhePedido> detalhePedidoList;
 
     public Pedido() {
     }
@@ -111,21 +106,21 @@ public class Pedido implements Serializable {
         this.data = data;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     @XmlTransient
-    public List<ItemPedido> getItemPedidoList() {
-        return itemPedidoList;
+    public List<DetalhePedido> getDetalhePedidoList() {
+        return detalhePedidoList;
     }
 
-    public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
-        this.itemPedidoList = itemPedidoList;
-    }
-
-    public Cliente getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Cliente idCliente) {
-        this.idCliente = idCliente;
+    public void setDetalhePedidoList(List<DetalhePedido> detalhePedidoList) {
+        this.detalhePedidoList = detalhePedidoList;
     }
 
     @Override
@@ -152,5 +147,5 @@ public class Pedido implements Serializable {
     public String toString() {
         return "Modelo.Pedido[ id=" + id + " ]";
     }
-
-	}
+    
+}

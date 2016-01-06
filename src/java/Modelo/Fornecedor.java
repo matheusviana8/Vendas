@@ -29,25 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "fornecedor")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Fornecedor.findAll", query = "SELECT f FROM Fornecedor f"),
-    @NamedQuery(name = "Fornecedor.findByIdfornecedor", query = "SELECT f FROM Fornecedor f WHERE f.idfornecedor = :idfornecedor"),
-    @NamedQuery(name = "Fornecedor.findByNome", query = "SELECT f FROM Fornecedor f WHERE f.nome = :nome"),
-    @NamedQuery(name = "Fornecedor.findByEndereco", query = "SELECT f FROM Fornecedor f WHERE f.endereco = :endereco"),
-    @NamedQuery(name = "Fornecedor.findByEmail", query = "SELECT f FROM Fornecedor f WHERE f.email = :email"),
-    @NamedQuery(name = "Fornecedor.findByBairro", query = "SELECT f FROM Fornecedor f WHERE f.bairro = :bairro"),
-    @NamedQuery(name = "Fornecedor.findByCidade", query = "SELECT f FROM Fornecedor f WHERE f.cidade = :cidade"),
-    @NamedQuery(name = "Fornecedor.findByCep", query = "SELECT f FROM Fornecedor f WHERE f.cep = :cep"),
-    @NamedQuery(name = "Fornecedor.findByEstado", query = "SELECT f FROM Fornecedor f WHERE f.estado = :estado"),
-    @NamedQuery(name = "Fornecedor.findByFone", query = "SELECT f FROM Fornecedor f WHERE f.fone = :fone"),
-    @NamedQuery(name = "Fornecedor.findByCelular", query = "SELECT f FROM Fornecedor f WHERE f.celular = :celular"),
-    @NamedQuery(name = "Fornecedor.findByCpf", query = "SELECT f FROM Fornecedor f WHERE f.cpf = :cpf"),
-    @NamedQuery(name = "Fornecedor.findByObs", query = "SELECT f FROM Fornecedor f WHERE f.obs = :obs"),
-    @NamedQuery(name = "Fornecedor.findByRg", query = "SELECT f FROM Fornecedor f WHERE f.rg = :rg"),
-    @NamedQuery(name = "Fornecedor.findByOrgaorg", query = "SELECT f FROM Fornecedor f WHERE f.orgaorg = :orgaorg"),
-    @NamedQuery(name = "Fornecedor.findByDesde", query = "SELECT f FROM Fornecedor f WHERE f.desde = :desde"),
-    @NamedQuery(name = "Fornecedor.findByCnpj", query = "SELECT f FROM Fornecedor f WHERE f.cnpj = :cnpj"),
-    @NamedQuery(name = "Fornecedor.findByInsest", query = "SELECT f FROM Fornecedor f WHERE f.insest = :insest"),
-    @NamedQuery(name = "Fornecedor.findByContato", query = "SELECT f FROM Fornecedor f WHERE f.contato = :contato")})
+    @NamedQuery(name = "Fornecedor.findAll", query = "SELECT f FROM Fornecedor f")})
 public class Fornecedor implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

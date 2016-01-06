@@ -66,7 +66,7 @@ public class ClienteDao {
         InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/report1.jrxml");
         JasperReport report = JasperCompileManager.compileReport(relatorioStream);
         JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(lista));
-        
+
         ByteArrayOutputStream Teste = new ByteArrayOutputStream();
         JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
         //JRExporter exporter = new net.sf.jasperreports.engine.export.JRHtmlExporter();
@@ -79,7 +79,26 @@ public class ClienteDao {
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
         exporter.exportReport();
 
-        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()),"application/pdf", "Cadastro de Clientes.pdf");
-      
+        return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()), "application/pdf", "Cadastro de Clientes.pdf");
+
+    }
+
+    public Cliente buscarPorId(int id) {
+        session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Cliente cliente = (Cliente) session.createQuery("from Cliente where Id=:id")
+                    .setInteger("id", id)
+                    .uniqueResult();
+            session.getTransaction().commit();
+            return cliente;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            session.close();
+
+        }
     }
 }

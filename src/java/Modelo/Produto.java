@@ -6,8 +6,10 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,14 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "produto")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Produto.findAll", query = "SELECT p FROM Produto p"),
-    @NamedQuery(name = "Produto.findById", query = "SELECT p FROM Produto p WHERE p.id = :id"),
-    @NamedQuery(name = "Produto.findBySku", query = "SELECT p FROM Produto p WHERE p.sku = :sku"),
-    @NamedQuery(name = "Produto.findByDescricao", query = "SELECT p FROM Produto p WHERE p.descricao = :descricao"),
-    @NamedQuery(name = "Produto.findByVlrcompra", query = "SELECT p FROM Produto p WHERE p.vlrcompra = :vlrcompra"),
-    @NamedQuery(name = "Produto.findByVlrvenda", query = "SELECT p FROM Produto p WHERE p.vlrvenda = :vlrvenda"),
-    @NamedQuery(name = "Produto.findByEstoque", query = "SELECT p FROM Produto p WHERE p.estoque = :estoque"),
-    @NamedQuery(name = "Produto.findByCritico", query = "SELECT p FROM Produto p WHERE p.critico = :critico")})
+    @NamedQuery(name = "Produto.findAll", query = "SELECT p FROM Produto p")})
 public class Produto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,14 +57,29 @@ public class Produto implements Serializable {
     private Integer estoque;
     @Column(name = "critico")
     private Integer critico;
-    @OneToMany(mappedBy = "idProduto")
-    private List<ItemPedido> itemPedidoList;
+    @Column(name = "data_cadastro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataCadastro;
+    @Size(max = 255)
+    @Column(name = "unidade")
+    private String unidade;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valor")
+    private float valor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    private List<DetalhePedido> detalhePedidoList;
 
     public Produto() {
     }
 
     public Produto(Integer id) {
         this.id = id;
+    }
+
+    public Produto(Integer id, float valor) {
+        this.id = id;
+        this.valor = valor;
     }
 
     public Integer getId() {
@@ -125,13 +138,37 @@ public class Produto implements Serializable {
         this.critico = critico;
     }
 
-    @XmlTransient
-    public List<ItemPedido> getItemPedidoList() {
-        return itemPedidoList;
+    public Date getDataCadastro() {
+        return dataCadastro;
     }
 
-    public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
-        this.itemPedidoList = itemPedidoList;
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public String getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+
+    public float getValor() {
+        return valor;
+    }
+
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
+
+    @XmlTransient
+    public List<DetalhePedido> getDetalhePedidoList() {
+        return detalhePedidoList;
+    }
+
+    public void setDetalhePedidoList(List<DetalhePedido> detalhePedidoList) {
+        this.detalhePedidoList = detalhePedidoList;
     }
 
     @Override

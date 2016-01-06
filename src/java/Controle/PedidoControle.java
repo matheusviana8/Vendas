@@ -7,11 +7,7 @@ package Controle;
 
 import Dao.PedidoDao;
 import Modelo.Cliente;
-import Modelo.ItemPedido;
 import Modelo.Pedido;
-import Modelo.Produto;
-import Util.HibernateUtil;
-import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -32,10 +28,12 @@ public class PedidoControle {
     public PedidoControle() {
         System.out.println("PEDIDO CONTROLE");
         pedido = new Pedido();
+//        pedido.setCliente(new Cliente());
     }
 
     //Métodos dos botões 
     public void cadastrar() {
+        System.out.println("CADASTRANDO PEDIDO: "+pedido.getCliente());
         new PedidoDao().inserir(pedido);
     }
 
@@ -52,13 +50,22 @@ public class PedidoControle {
         return pedido;
     }
 
-    public void inicializar() {
-        ItemPedido item = new ItemPedido();
-        item.setIdPedido(pedido);
-        item.setIdProduto(new Produto());
-        this.pedido.setItemPedidoList(new ArrayList<ItemPedido>());
-        this.pedido.getItemPedidoList().add(item);
+//    public void inicializar() {
+//        ItemPedido item = new ItemPedido();
+//        item.setIdPedido(pedido);
+//        item.setIdProduto(new Produto());
+//        this.pedido.setItemPedidoList(new ArrayList<ItemPedido>());
+//        this.pedido.getItemPedidoList().add(item);
+//    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
     }
 
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    
     
 }

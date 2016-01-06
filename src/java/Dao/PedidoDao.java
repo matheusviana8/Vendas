@@ -38,6 +38,9 @@ public class PedidoDao {
             session.save(pedido);
             session.getTransaction().commit();
 
+        }catch(Exception e){
+            e.printStackTrace();
+            
         } finally {
             session.close();
 
