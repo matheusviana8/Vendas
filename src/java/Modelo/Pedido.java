@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -56,7 +57,7 @@ public class Pedido implements Serializable {
     @ManyToOne
     private Cliente cliente;
     @OneToMany(mappedBy = "idPedido")
-    private List<DetalhePedido> detalhePedidoList;
+    private List<DetalhePedido> detalhePedidoList = new ArrayList<>();
 
     public Pedido() {
     }
