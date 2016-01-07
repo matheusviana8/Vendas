@@ -7,8 +7,8 @@ package Modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,11 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -54,8 +55,8 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "cliente", referencedColumnName = "id")
     @ManyToOne
     private Cliente cliente;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
-    private DetalhePedido detalhePedido;
+    @OneToMany(mappedBy = "idPedido")
+    private List<DetalhePedido> detalhePedidoList;
 
     public Pedido() {
     }
@@ -112,12 +113,13 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
     }
 
-    public DetalhePedido getDetalhePedido() {
-        return detalhePedido;
+    @XmlTransient
+    public List<DetalhePedido> getDetalhePedidoList() {
+        return detalhePedidoList;
     }
 
-    public void setDetalhePedido(DetalhePedido detalhePedido) {
-        this.detalhePedido = detalhePedido;
+    public void setDetalhePedidoList(List<DetalhePedido> detalhePedidoList) {
+        this.detalhePedidoList = detalhePedidoList;
     }
 
     @Override
