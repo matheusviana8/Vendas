@@ -39,7 +39,9 @@ and open the template in the editor.
                                         var="p" itemLabel="#{p.descricao}" itemValue="#{p}"
                                         rendered="#{not item.produtoAssociado}"
                                         forceSelection="true">
-                            <p:ajax event="itemSelect" listener="#{pedidoControle.carregarProdutoLinhaEditavel}" update="tabPedido"/>
+                            <p:ajax event="itemSelect" 
+                                    listener="#{pedidoControle.carregarProdutoLinhaEditavel}"
+                                    update="tabPedido"/>
                         </p:autoComplete>
                     </p:column>
                     <p:column headerText="Quantidade">

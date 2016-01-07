@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +74,7 @@ public class Pedido implements Serializable {
 			this.getDetalhePedidoList().add(0, item);
 		
 	}
-    
+        
     public Pedido(Integer id) {
         this.id = id;
     }

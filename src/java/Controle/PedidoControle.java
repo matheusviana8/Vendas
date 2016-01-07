@@ -15,7 +15,7 @@ import Util.FacesUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import net.sf.jasperreports.engine.JRException;
 import org.primefaces.model.DefaultStreamedContent;
 
@@ -24,7 +24,7 @@ import org.primefaces.model.DefaultStreamedContent;
  * @author MATHEUS
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class PedidoControle {
 
     private Pedido pedido;
@@ -35,7 +35,7 @@ public class PedidoControle {
         System.out.println("PEDIDO CONTROLE");
         pedido = new Pedido();
 //        pedido.setCliente(new Cliente());
-        inicializar();
+        pedido.adicionarItemVazio();        
     }
 
     //Métodos dos botões 
@@ -59,8 +59,7 @@ public class PedidoControle {
                 item.setIdPedido(pedido);
                 item.setIdProduto(produtoLinhaEditavel);
                 item.setVlrUnitario(produtoLinhaEditavel.getVlrvenda());
-                pedido.getDetalhePedidoList().add(item);
-
+                
                 pedido.adicionarItemVazio();
                 produtoLinhaEditavel = null;
                 FacesUtil.addInfoMessage("adicionado.");
@@ -94,10 +93,7 @@ public class PedidoControle {
         return pedido;
     }
 
-    public void inicializar() {
-        pedido.adicionarItemVazio();
-    }
-
+    
     public List<Pedido> getPedidos() {
         return pedidos;
     }
