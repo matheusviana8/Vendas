@@ -26,6 +26,5 @@
     <mapping class="Modelo.Produto"/>
     <mapping class="Modelo.Fornecedor"/>
     <mapping class="Modelo.DetalhePedido"/>
-    <mapping class="Modelo.DetalhePedidoPK"/>
   </session-factory>
 </hibernate-configuration>

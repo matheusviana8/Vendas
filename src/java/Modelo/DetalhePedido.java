@@ -6,14 +6,17 @@
 package Modelo;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,37 +30,36 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DetalhePedido.findAll", query = "SELECT d FROM DetalhePedido d")})
 public class DetalhePedido implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected DetalhePedidoPK detalhePedidoPK;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "idPedido")
+    private Integer idPedido;
     @Column(name = "quantidade")
     private Integer quantidade;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "vlrUnitario")
     private Double vlrUnitario;
     @JoinColumn(name = "idPedido", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Pedido pedido;
-    @JoinColumn(name = "idProduto", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Produto produto;
+    @JoinColumn(name = "idProduto", referencedColumnName = "id")
+    @ManyToOne
+    private Produto idProduto;
 
     public DetalhePedido() {
     }
 
-    public DetalhePedido(DetalhePedidoPK detalhePedidoPK) {
-        this.detalhePedidoPK = detalhePedidoPK;
+    public DetalhePedido(Integer idPedido) {
+        this.idPedido = idPedido;
     }
 
-    public DetalhePedido(int idPedido, int idProduto) {
-        this.detalhePedidoPK = new DetalhePedidoPK(idPedido, idProduto);
+    public Integer getIdPedido() {
+        return idPedido;
     }
 
-    public DetalhePedidoPK getDetalhePedidoPK() {
-        return detalhePedidoPK;
-    }
-
-    public void setDetalhePedidoPK(DetalhePedidoPK detalhePedidoPK) {
-        this.detalhePedidoPK = detalhePedidoPK;
+    public void setIdPedido(Integer idPedido) {
+        this.idPedido = idPedido;
     }
 
     public Integer getQuantidade() {
@@ -84,18 +86,18 @@ public class DetalhePedido implements Serializable {
         this.pedido = pedido;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Produto getIdProduto() {
+        return idProduto;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setIdProduto(Produto idProduto) {
+        this.idProduto = idProduto;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (detalhePedidoPK != null ? detalhePedidoPK.hashCode() : 0);
+        hash += (idPedido != null ? idPedido.hashCode() : 0);
         return hash;
     }
 
@@ -106,7 +108,7 @@ public class DetalhePedido implements Serializable {
             return false;
         }
         DetalhePedido other = (DetalhePedido) object;
-        if ((this.detalhePedidoPK == null && other.detalhePedidoPK != null) || (this.detalhePedidoPK != null && !this.detalhePedidoPK.equals(other.detalhePedidoPK))) {
+        if ((this.idPedido == null && other.idPedido != null) || (this.idPedido != null && !this.idPedido.equals(other.idPedido))) {
             return false;
         }
         return true;
@@ -114,7 +116,7 @@ public class DetalhePedido implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.DetalhePedido[ detalhePedidoPK=" + detalhePedidoPK + " ]";
+        return "Modelo.DetalhePedido[ idPedido=" + idPedido + " ]";
     }
     
 }

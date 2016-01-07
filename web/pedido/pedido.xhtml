@@ -35,12 +35,12 @@ and open the template in the editor.
                     <p:ajax event="itemSelect" listener="#{pedidoControle.carregarProdutoLinhaEditavel}" update="dadosPedido"/>
                 </p:autoComplete><br/>
 
-                <p:dataTable var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
+                <p:dataTable var="item" value="">
                     <p:column headerText="Produto">
-                        <h:outputText value="#{item.produto}" />
+                        <h:outputText value="" />
                     </p:column>
                      <p:column headerText="Quantidade">
-                         <h:outputText value="#{item.quantidade}" />
+                         <h:outputText value="" />
                     </p:column>
 
                 </p:dataTable>

@@ -7,7 +7,10 @@ package Controle;
 
 import Dao.PedidoDao;
 import Modelo.Cliente;
+import Modelo.DetalhePedido;
 import Modelo.Pedido;
+import Modelo.Produto;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -23,11 +26,13 @@ import org.primefaces.model.DefaultStreamedContent;
 public class PedidoControle {
 
     private Pedido pedido;
+    private Produto produtoLinhaEditavel;
     private List<Pedido> pedidos;
 
     public PedidoControle() {
         System.out.println("PEDIDO CONTROLE");
         pedido = new Pedido();
+        produtoLinhaEditavel = new Produto();
 //        pedido.setCliente(new Cliente());
     }
 
@@ -35,6 +40,10 @@ public class PedidoControle {
     public void cadastrar() {
         System.out.println("CADASTRANDO PEDIDO: "+pedido.getCliente());
         new PedidoDao().inserir(pedido);
+    }
+    
+    public void carregarProdutoLinhaEditavel(){
+        
     }
 
     public List<Pedido> listar() {
@@ -64,6 +73,14 @@ public class PedidoControle {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public Produto getProdutoLinhaEditavel() {
+        return produtoLinhaEditavel;
+    }
+
+    public void setProdutoLinhaEditavel(Produto produtoLinhaEditavel) {
+        this.produtoLinhaEditavel = produtoLinhaEditavel;
     }
 
     

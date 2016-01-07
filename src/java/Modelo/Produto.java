@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -67,7 +66,7 @@ public class Produto implements Serializable {
     @NotNull
     @Column(name = "valor")
     private float valor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    @OneToMany(mappedBy = "idProduto")
     private List<DetalhePedido> detalhePedidoList;
 
     public Produto() {

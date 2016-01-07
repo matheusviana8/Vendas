@@ -7,6 +7,7 @@ package Controle;
 
 import Dao.ProdutoDao;
 import Modelo.Produto;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -33,6 +34,25 @@ public class ProdutoControle {
      public List<Produto> listar() {
         return dao.listar();
     }
+     public List<Produto> complete(String nome) {
+		List<Produto> queryResult = new ArrayList<Produto>();
+
+		if (produtos == null) {
+			
+			produtos = dao.listar();
+		}
+                
+//		allDogs.removeAll(personWithDogs.getDogs());
+
+		for (Produto produto : produtos) {
+			if (produto.getDescricao().toLowerCase().contains(nome.toLowerCase())) {
+				queryResult.add(produto);
+			}
+		}
+
+		return queryResult;
+	}
+
 
     public Produto getProduto() {
         return produto;
