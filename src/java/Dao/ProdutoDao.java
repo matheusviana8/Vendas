@@ -85,4 +85,23 @@ public class ProdutoDao {
         return new DefaultStreamedContent(new ByteArrayInputStream(Teste.toByteArray()), "application/pdf", "Cadastro de Produtos.pdf");
 
     }
+
+    public Produto buscarPorId(int id) {
+        session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Produto produto = (Produto) session.createQuery("from Produto where Id=:id")
+                    .setInteger("id", id)
+                    .uniqueResult();
+            session.getTransaction().commit();
+            return produto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            session.close();
+
+        }
+    }
 }
