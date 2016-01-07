@@ -34,10 +34,10 @@ public class PedidoControle {
     public PedidoControle() {
         System.out.println("PEDIDO CONTROLE");
         pedido = new Pedido();
-        this.pedido.adicionarItemVazio();
 //        pedido.setCliente(new Cliente());
+        inicializar();
     }
-    
+
     //Métodos dos botões 
     public void cadastrar() {
 
@@ -48,41 +48,42 @@ public class PedidoControle {
     }
 
     public void carregarProdutoLinhaEditavel() {
-        
-        
-        if(existeItemComProduto(produtoLinhaEditavel)){
-            System.out.println("NÃO ADICIONA");
-            FacesUtil.addErrorMessage("Já existe um item no pedido com o produto informado.");
-        }else{
-            System.out.println("ADIC NOVO");
-            FacesUtil.addErrorMessage("Já existe um item no pedido com o produto informado.");
-            DetalhePedido item = this.pedido.getDetalhePedidoList().get(0);
-            item.setIdPedido(this.pedido);
-            item.setIdProduto(produtoLinhaEditavel);
-            pedido.getDetalhePedidoList().add(item);
-            
-            this.pedido.adicionarItemVazio();
-            produtoLinhaEditavel = null;
+
+        DetalhePedido item = this.pedido.getDetalhePedidoList().get(0);
+        if (this.produtoLinhaEditavel != null) {
+            if (existeItemComProduto(produtoLinhaEditavel)) {
+                System.out.println("NÃO ADICIONA");
+                FacesUtil.addErrorMessage("Já existe um item no pedido com o produto informado.");
+            } else {
+                System.out.println("ADIC NOVO");
+                item.setIdPedido(pedido);
+                item.setIdProduto(produtoLinhaEditavel);
+                item.setVlrUnitario(produtoLinhaEditavel.getVlrvenda());
+                pedido.getDetalhePedidoList().add(item);
+
+                pedido.adicionarItemVazio();
+                produtoLinhaEditavel = null;
+                FacesUtil.addInfoMessage("adicionado.");
+            }
         }
-       
     }
 
     public List<Pedido> listar() {
         return pedidos = new PedidoDao().listar();
     }
-    
+
     private boolean existeItemComProduto(Produto produto) {
-		boolean existeItem = false;
-		
-		for (DetalhePedido item : this.pedido.getDetalhePedidoList()) {
-			if (produto.equals(item.getIdProduto())) {
-				existeItem = true;
-				break;
-			}
-		}
-		
-		return existeItem;
-	}
+        boolean existeItem = false;
+
+        for (DetalhePedido item : this.pedido.getDetalhePedidoList()) {
+            if (produto.equals(item.getIdProduto())) {
+                existeItem = true;
+                break;
+            }
+        }
+
+        return existeItem;
+    }
 
     public DefaultStreamedContent emitir() throws JRException {
 
@@ -93,13 +94,10 @@ public class PedidoControle {
         return pedido;
     }
 
-//    public void inicializar() {
-//        ItemPedido item = new ItemPedido();
-//        item.setIdPedido(pedido);
-//        item.setIdProduto(new Produto());
-//        this.pedido.setItemPedidoList(new ArrayList<ItemPedido>());
-//        this.pedido.getItemPedidoList().add(item);
-//    }
+    public void inicializar() {
+        pedido.adicionarItemVazio();
+    }
+
     public List<Pedido> getPedidos() {
         return pedidos;
     }

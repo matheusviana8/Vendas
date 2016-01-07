@@ -14,7 +14,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-
+        
         <h:form id="formPedido">
             <p:messages autoUpdate="true" />
             <p:panel id="dadosCliente" header="Dados do Cliente">
@@ -33,15 +33,17 @@ and open the template in the editor.
                 <p:dataTable id="tabPedido" var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
                    
                     <p:column headerText="Produto">
-                        <h:outputText value="#{item.idProduto.descricao}" />
-                        <p:autoComplete value="#{pedidoControle.produtoLinhaEditavel}" completeMethod="#{produtoControle.complete}"
+                        <h:outputText value="#{item.idProduto.descricao}" rendered="#{item.produtoAssociado}" />
+                        <p:autoComplete value="#{pedidoControle.produtoLinhaEditavel}"
+                                        completeMethod="#{produtoControle.complete}"
                                         var="p" itemLabel="#{p.descricao}" itemValue="#{p}"
+                                        rendered="#{not item.produtoAssociado}"
                                         forceSelection="true">
                             <p:ajax event="itemSelect" listener="#{pedidoControle.carregarProdutoLinhaEditavel}" update="tabPedido"/>
                         </p:autoComplete>
                     </p:column>
                     <p:column headerText="Quantidade">
-                        <h:outputText value="" />
+                        <h:outputText value="#{item.vlrUnitario}" />
                     </p:column>
 
                 </p:dataTable>

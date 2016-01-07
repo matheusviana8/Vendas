@@ -50,6 +50,10 @@ public class DetalhePedido implements Serializable {
     public DetalhePedido() {
     }
 
+    public boolean isProdutoAssociado() {
+		return this.getIdProduto() != null && this.getIdProduto().getId() != null;
+	}
+    
     public DetalhePedido(Integer id) {
         this.id = id;
     }

@@ -73,7 +73,7 @@ public class Pedido implements Serializable {
 			this.getDetalhePedidoList().add(0, item);
 		
 	}
-
+    
     public Pedido(Integer id) {
         this.id = id;
     }
