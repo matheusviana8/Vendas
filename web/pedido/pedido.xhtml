@@ -16,11 +16,35 @@ and open the template in the editor.
     <h:body>
 
         <h:form id="formPedido">
-            <p:outputLabel value="Cliente:" for="cliente" />
-            <p:autoComplete id="cliente" value="#{pedidoControle.pedido.cliente}" completeMethod="#{clienteController.listar()}"
-                            var="c" itemLabel="#{c.nome}" itemValue="#{c}"
-                            forceSelection="true" />
+            <p:panel id="dadosCliente" header="Dados do Cliente">
+                <p:outputLabel value="Cliente:" for="cliente" />
+                <p:autoComplete id="cliente" value="#{pedidoControle.pedido.cliente}" completeMethod="#{clienteController.listar()}"
+                                var="c" itemLabel="#{c.nome}" itemValue="#{c}"
+                                forceSelection="true">
+                    <p:ajax event="itemSelect" update="dadosCliente"/>
+                </p:autoComplete><br/>
+                <p:outputLabel value="CPF: #{pedidoControle.pedido.cliente.cpf}" /><br/>
+                <p:outputLabel value="Endereço: #{pedidoControle.pedido.cliente.endereco}" /><br/>
+            </p:panel>
+            <p:separator/>
+            <p:panel id="dadosPedido" header="Dados do Pedido">
+                <p:outputLabel value="Pesquisar produto:" /><br/>
+                <p:autoComplete id="produto" value="#{pedidoControle.produtoLinhaEditavel}" completeMethod="#{produtoControle.complete}"
+                                var="p" itemLabel="#{p.descricao}" itemValue="#{p}"
+                                forceSelection="true">
+                    <p:ajax event="itemSelect" listener="#{pedidoControle.carregarProdutoLinhaEditavel}" update="dadosPedido"/>
+                </p:autoComplete><br/>
 
+                <p:dataTable var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
+                    <p:column headerText="Produto">
+                        <h:outputText value="#{item.produto}" />
+                    </p:column>
+                     <p:column headerText="Quantidade">
+                         <h:outputText value="#{item.quantidade}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
             <p:commandButton value="SALVAR" update="formPedido" action="#{pedidoControle.cadastrar()}"/>
         </h:form>
     </h:body>
