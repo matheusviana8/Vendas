@@ -37,58 +37,58 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "idfornecedor")
     private Integer idfornecedor;
-    @Size(max = 100)
-    @Column(name = "nome")
-    private String nome;
-    @Size(max = 45)
-    @Column(name = "endereco")
-    private String endereco;
+    @Size(max = 30)
+    @Column(name = "bairro")
+    private String bairro;
+    @Size(max = 10)
+    @Column(name = "celular")
+    private String celular;
+    @Size(max = 8)
+    @Column(name = "cep")
+    private String cep;
+    @Size(max = 30)
+    @Column(name = "cidade")
+    private String cidade;
+    @Size(max = 14)
+    @Column(name = "cnpj")
+    private String cnpj;
+    @Size(max = 20)
+    @Column(name = "contato")
+    private String contato;
+    @Size(max = 11)
+    @Column(name = "cpf")
+    private String cpf;
+    @Column(name = "desde")
+    @Temporal(TemporalType.DATE)
+    private Date desde;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 200)
     @Column(name = "email")
     private String email;
-    @Size(max = 30)
-    @Column(name = "bairro")
-    private String bairro;
-    @Size(max = 30)
-    @Column(name = "cidade")
-    private String cidade;
-    @Size(max = 8)
-    @Column(name = "cep")
-    private String cep;
+    @Size(max = 45)
+    @Column(name = "endereco")
+    private String endereco;
     @Size(max = 2)
     @Column(name = "estado")
     private String estado;
     @Size(max = 10)
     @Column(name = "fone")
     private String fone;
-    @Size(max = 10)
-    @Column(name = "celular")
-    private String celular;
-    @Size(max = 11)
-    @Column(name = "cpf")
-    private String cpf;
-    @Size(max = 200)
-    @Column(name = "obs")
-    private String obs;
-    @Size(max = 20)
-    @Column(name = "rg")
-    private String rg;
-    @Size(max = 10)
-    @Column(name = "orgaorg")
-    private String orgaorg;
-    @Column(name = "desde")
-    @Temporal(TemporalType.DATE)
-    private Date desde;
-    @Size(max = 14)
-    @Column(name = "cnpj")
-    private String cnpj;
     @Size(max = 20)
     @Column(name = "insest")
     private String insest;
+    @Size(max = 100)
+    @Column(name = "nome")
+    private String nome;
+    @Size(max = 200)
+    @Column(name = "obs")
+    private String obs;
+    @Size(max = 10)
+    @Column(name = "orgaorg")
+    private String orgaorg;
     @Size(max = 20)
-    @Column(name = "contato")
-    private String contato;
+    @Column(name = "rg")
+    private String rg;
 
     public Fornecedor() {
     }
@@ -105,36 +105,28 @@ public class Fornecedor implements Serializable {
         this.idfornecedor = idfornecedor;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getBairro() {
         return bairro;
     }
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public String getCidade() {
@@ -145,12 +137,52 @@ public class Fornecedor implements Serializable {
         this.cidade = cidade;
     }
 
-    public String getCep() {
-        return cep;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getContato() {
+        return contato;
+    }
+
+    public void setContato(String contato) {
+        this.contato = contato;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Date getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Date desde) {
+        this.desde = desde;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getEstado() {
@@ -169,20 +201,20 @@ public class Fornecedor implements Serializable {
         this.fone = fone;
     }
 
-    public String getCelular() {
-        return celular;
+    public String getInsest() {
+        return insest;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
+    public void setInsest(String insest) {
+        this.insest = insest;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getNome() {
+        return nome;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getObs() {
@@ -193,14 +225,6 @@ public class Fornecedor implements Serializable {
         this.obs = obs;
     }
 
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
     public String getOrgaorg() {
         return orgaorg;
     }
@@ -209,36 +233,12 @@ public class Fornecedor implements Serializable {
         this.orgaorg = orgaorg;
     }
 
-    public Date getDesde() {
-        return desde;
+    public String getRg() {
+        return rg;
     }
 
-    public void setDesde(Date desde) {
-        this.desde = desde;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public String getInsest() {
-        return insest;
-    }
-
-    public void setInsest(String insest) {
-        this.insest = insest;
-    }
-
-    public String getContato() {
-        return contato;
-    }
-
-    public void setContato(String contato) {
-        this.contato = contato;
+    public void setRg(String rg) {
+        this.rg = rg;
     }
 
     @Override

@@ -6,10 +6,12 @@
 package Controle;
 
 import Dao.PedidoDao;
+import Dao.ProdutoDao;
 import Modelo.Cliente;
 import Modelo.DetalhePedido;
 import Modelo.Pedido;
 import Modelo.Produto;
+import Util.FacesUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -32,23 +34,55 @@ public class PedidoControle {
     public PedidoControle() {
         System.out.println("PEDIDO CONTROLE");
         pedido = new Pedido();
-        produtoLinhaEditavel = new Produto();
+        this.pedido.adicionarItemVazio();
 //        pedido.setCliente(new Cliente());
     }
-
+    
     //Métodos dos botões 
     public void cadastrar() {
-        System.out.println("CADASTRANDO PEDIDO: "+pedido.getCliente());
+
+        System.out.println("CADASTRANDO PEDIDO: produto /tamanho "
+                + this.pedido.getDetalhePedidoList().isEmpty()
+                + this.pedido.getDetalhePedidoList().size());
         new PedidoDao().inserir(pedido);
     }
-    
-    public void carregarProdutoLinhaEditavel(){
+
+    public void carregarProdutoLinhaEditavel() {
         
+        
+        if(existeItemComProduto(produtoLinhaEditavel)){
+            System.out.println("NÃO ADICIONA");
+            FacesUtil.addErrorMessage("Já existe um item no pedido com o produto informado.");
+        }else{
+            System.out.println("ADIC NOVO");
+            FacesUtil.addErrorMessage("Já existe um item no pedido com o produto informado.");
+            DetalhePedido item = this.pedido.getDetalhePedidoList().get(0);
+            item.setIdPedido(this.pedido);
+            item.setIdProduto(produtoLinhaEditavel);
+            pedido.getDetalhePedidoList().add(item);
+            
+            this.pedido.adicionarItemVazio();
+            produtoLinhaEditavel = null;
+        }
+       
     }
 
     public List<Pedido> listar() {
         return pedidos = new PedidoDao().listar();
     }
+    
+    private boolean existeItemComProduto(Produto produto) {
+		boolean existeItem = false;
+		
+		for (DetalhePedido item : this.pedido.getDetalhePedidoList()) {
+			if (produto.equals(item.getIdProduto())) {
+				existeItem = true;
+				break;
+			}
+		}
+		
+		return existeItem;
+	}
 
     public DefaultStreamedContent emitir() throws JRException {
 
@@ -66,7 +100,6 @@ public class PedidoControle {
 //        this.pedido.setItemPedidoList(new ArrayList<ItemPedido>());
 //        this.pedido.getItemPedidoList().add(item);
 //    }
-
     public List<Pedido> getPedidos() {
         return pedidos;
     }
@@ -83,6 +116,13 @@ public class PedidoControle {
         this.produtoLinhaEditavel = produtoLinhaEditavel;
     }
 
-    
-    
+    private boolean existeItem() {
+        if (this.pedido.getDetalhePedidoList().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
 }

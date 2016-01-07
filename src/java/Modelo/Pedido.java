@@ -42,17 +42,17 @@ public class Pedido implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "data")
+    @Temporal(TemporalType.DATE)
+    private Date data;
     @Column(name = "prazoEntrega")
     @Temporal(TemporalType.DATE)
     private Date prazoEntrega;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "vlrTotal")
-    private Double vlrTotal;
     @Column(name = "vlrDesconto")
     private Double vlrDesconto;
-    @Column(name = "data")
-    @Temporal(TemporalType.DATE)
-    private Date data;
+    @Column(name = "vlrTotal")
+    private Double vlrTotal;
     @JoinColumn(name = "cliente", referencedColumnName = "id")
     @ManyToOne
     private Cliente cliente;
@@ -61,6 +61,18 @@ public class Pedido implements Serializable {
 
     public Pedido() {
     }
+    
+    public void adicionarItemVazio() {
+		
+			Produto produto = new Produto();
+			
+			DetalhePedido item = new DetalhePedido();
+			item.setIdProduto(produto);
+			item.setIdPedido(this);
+			
+			this.getDetalhePedidoList().add(0, item);
+		
+	}
 
     public Pedido(Integer id) {
         this.id = id;
@@ -74,20 +86,20 @@ public class Pedido implements Serializable {
         this.id = id;
     }
 
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
     public Date getPrazoEntrega() {
         return prazoEntrega;
     }
 
     public void setPrazoEntrega(Date prazoEntrega) {
         this.prazoEntrega = prazoEntrega;
-    }
-
-    public Double getVlrTotal() {
-        return vlrTotal;
-    }
-
-    public void setVlrTotal(Double vlrTotal) {
-        this.vlrTotal = vlrTotal;
     }
 
     public Double getVlrDesconto() {
@@ -98,12 +110,12 @@ public class Pedido implements Serializable {
         this.vlrDesconto = vlrDesconto;
     }
 
-    public Date getData() {
-        return data;
+    public Double getVlrTotal() {
+        return vlrTotal;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setVlrTotal(Double vlrTotal) {
+        this.vlrTotal = vlrTotal;
     }
 
     public Cliente getCliente() {

@@ -16,6 +16,7 @@ and open the template in the editor.
     <h:body>
 
         <h:form id="formPedido">
+            <p:messages autoUpdate="true" />
             <p:panel id="dadosCliente" header="Dados do Cliente">
                 <p:outputLabel value="Cliente:" for="cliente" />
                 <p:autoComplete id="cliente" value="#{pedidoControle.pedido.cliente}" completeMethod="#{clienteController.complete}"
@@ -28,19 +29,19 @@ and open the template in the editor.
             </p:panel>
             <p:separator/>
             <p:panel id="dadosPedido" header="Dados do Pedido">
-                <p:outputLabel value="Pesquisar produto:" /><br/>
-                <p:autoComplete id="produto" value="#{pedidoControle.produtoLinhaEditavel}" completeMethod="#{produtoControle.complete}"
-                                var="p" itemLabel="#{p.descricao}" itemValue="#{p}"
-                                forceSelection="true">
-                    <p:ajax event="itemSelect" listener="#{pedidoControle.carregarProdutoLinhaEditavel}" update="dadosPedido"/>
-                </p:autoComplete><br/>
-
-                <p:dataTable var="item" value="">
+               
+                <p:dataTable id="tabPedido" var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
+                   
                     <p:column headerText="Produto">
-                        <h:outputText value="" />
+                        <h:outputText value="#{item.idProduto.descricao}" />
+                        <p:autoComplete value="#{pedidoControle.produtoLinhaEditavel}" completeMethod="#{produtoControle.complete}"
+                                        var="p" itemLabel="#{p.descricao}" itemValue="#{p}"
+                                        forceSelection="true">
+                            <p:ajax event="itemSelect" listener="#{pedidoControle.carregarProdutoLinhaEditavel}" update="tabPedido"/>
+                        </p:autoComplete>
                     </p:column>
-                     <p:column headerText="Quantidade">
-                         <h:outputText value="" />
+                    <p:column headerText="Quantidade">
+                        <h:outputText value="" />
                     </p:column>
 
                 </p:dataTable>

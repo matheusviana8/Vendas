@@ -20,11 +20,11 @@
         Tempo para validação de inatividade, no caso de 3000ms para o descarte de conexão;
         Número de statements que serão adicionados no cache. Por padrão é desabilitado;
         Tempo que as conexões irão expirar.-->
-    <property name="hibernate.hbm2ddl.auto">update</property>
+        
     <mapping class="Modelo.Cliente"/>
     <mapping class="Modelo.Pedido"/>
     <mapping class="Modelo.Produto"/>
     <mapping class="Modelo.Fornecedor"/>
-    <mapping class="Modelo.DetalhePedido"/>
+    <mapping class="Modelo.DetalhePedido"/>  
   </session-factory>
 </hibernate-configuration>
