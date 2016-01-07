@@ -35,23 +35,21 @@ public class ProdutoControle {
         return dao.listar();
     }
      public List<Produto> complete(String nome) {
-		List<Produto> queryResult = new ArrayList<Produto>();
+        List<Produto> queryResult = new ArrayList<Produto>();
 
-		if (produtos == null) {
-			
-			produtos = dao.listar();
-		}
-                
-//		allDogs.removeAll(personWithDogs.getDogs());
+        if (produtos == null) {
 
-		for (Produto produto : produtos) {
-			if (produto.getDescricao().toLowerCase().contains(nome.toLowerCase())) {
-				queryResult.add(produto);
-			}
-		}
+            produtos = dao.listar();
+        }
 
-		return queryResult;
-	}
+        for (Produto produto : produtos) {
+            if (produto.getDescricao().toLowerCase().contains(nome.toLowerCase())) {
+                queryResult.add(produto);
+            }
+        }
+
+        return queryResult;
+    }
 
 
     public Produto getProduto() {

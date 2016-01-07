@@ -18,7 +18,7 @@ and open the template in the editor.
         <h:form id="formPedido">
             <p:panel id="dadosCliente" header="Dados do Cliente">
                 <p:outputLabel value="Cliente:" for="cliente" />
-                <p:autoComplete id="cliente" value="#{pedidoControle.pedido.cliente}" completeMethod="#{clienteController.listar()}"
+                <p:autoComplete id="cliente" value="#{pedidoControle.pedido.cliente}" completeMethod="#{clienteController.complete}"
                                 var="c" itemLabel="#{c.nome}" itemValue="#{c}"
                                 forceSelection="true">
                     <p:ajax event="itemSelect" update="dadosCliente"/>

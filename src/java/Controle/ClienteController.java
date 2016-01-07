@@ -8,6 +8,7 @@ package Controle;
 import Dao.ClienteDao;
 import Modelo.Cliente;
 import Util.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -40,6 +41,22 @@ public class ClienteController {
     public List<Cliente> listar() {
         return clientes = new ClienteDao().listar();
     }
+    public List<Cliente> complete(String nome) {
+		List<Cliente> queryResult = new ArrayList<Cliente>();
+
+		if (clientes== null) {
+			
+			clientes = dao.listar();
+		}
+                
+		for (Cliente cliente : clientes) {
+			if (cliente.getNome().toLowerCase().contains(nome.toLowerCase())) {
+				queryResult.add(cliente);
+			}
+		}
+
+		return queryResult;
+	}
     
     public DefaultStreamedContent emitir() throws JRException{
         
