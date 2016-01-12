@@ -14,7 +14,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-        
+
         <h:form id="formPedido">
             <p:messages autoUpdate="true" />
             <p:panel id="dadosCliente" header="Dados do Cliente">
@@ -29,9 +29,10 @@ and open the template in the editor.
             </p:panel>
             <p:separator/>
             <p:panel id="dadosPedido" header="Dados do Pedido">
-               
-                <p:dataTable id="tabPedido" var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
-                   
+
+                <p:dataTable id="tabPedido" rowIndexVar="linha"
+                             var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
+
                     <p:column headerText="Produto">
                         <h:outputText value="#{item.idProduto.descricao}" rendered="#{item.produtoAssociado}" />
                         <p:autoComplete value="#{pedidoControle.produtoLinhaEditavel}"
@@ -44,8 +45,23 @@ and open the template in the editor.
                                     update="tabPedido"/>
                         </p:autoComplete>
                     </p:column>
-                    <p:column headerText="Preço">
-                        <h:outputText value="#{item.vlrUnitario}" />
+                    <p:column headerText="Quantidade">
+                        <p:inputText size="8" value="#{item.quantidade}">
+                            <p:ajax event="change" process="@this"
+                                    update="tabPedido"
+                                    listener="#{pedidoControle.atualizarQuantidade(item, linha)}" />
+                        </p:inputText>
+                    </p:column>
+                    <p:column headerText="Valor unitário">
+                        <h:outputText value="#{item.vlrUnitario}" >
+                            <f:convertNumber type="currency"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Valor total" style="text-align: right; width: 100px">
+                        <h:outputText value="#{item.valorTotal}">
+                            <f:convertNumber type="currency"/>
+                        </h:outputText>
                     </p:column>
 
                 </p:dataTable>

@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,10 +37,10 @@ public class DetalhePedido implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "quantidade")
-    private Integer quantidade;
+    private Integer quantidade = 1;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "vlrUnitario")
-    private Double vlrUnitario;
+    private BigDecimal vlrUnitario = BigDecimal.ZERO;
     @JoinColumn(name = "idPedido", referencedColumnName = "id")
     @ManyToOne
     private Pedido idPedido;
@@ -74,11 +75,11 @@ public class DetalhePedido implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public Double getVlrUnitario() {
+    public BigDecimal getVlrUnitario() {
         return vlrUnitario;
     }
 
-    public void setVlrUnitario(Double vlrUnitario) {
+    public void setVlrUnitario(BigDecimal vlrUnitario) {
         this.vlrUnitario = vlrUnitario;
     }
 
@@ -97,6 +98,10 @@ public class DetalhePedido implements Serializable {
     public void setIdProduto(Produto idProduto) {
         this.idProduto = idProduto;
     }
+    
+    public BigDecimal getValorTotal() {
+		return this.getVlrUnitario().multiply(new BigDecimal(this.getQuantidade()));
+	}
 
     @Override
     public int hashCode() {

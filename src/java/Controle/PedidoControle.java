@@ -69,6 +69,18 @@ public class PedidoControle {
             }
         }
     }
+    
+    public void atualizarQuantidade(DetalhePedido item, int linha) {
+		if (item.getQuantidade() < 1) {
+			if (linha == 0) {
+				item.setQuantidade(1);
+			} else {
+				this.getPedido().getDetalhePedidoList().remove(linha);
+			}
+		}
+		
+//		this.pedido.recalcularValorTotal();
+	}
 
     public List<Pedido> listar() {
         return pedidos = new PedidoDao().listar();

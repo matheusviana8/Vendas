@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -49,9 +50,9 @@ public class Produto implements Serializable {
     private String descricao;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "vlrcompra")
-    private Double vlrcompra;
+    private BigDecimal vlrcompra;
     @Column(name = "vlrvenda")
-    private Double vlrvenda;
+    private BigDecimal vlrvenda;
     @Column(name = "estoque")
     private Integer estoque;
     @Column(name = "critico")
@@ -105,19 +106,19 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
-    public Double getVlrcompra() {
+    public BigDecimal getVlrcompra() {
         return vlrcompra;
     }
 
-    public void setVlrcompra(Double vlrcompra) {
+    public void setVlrcompra(BigDecimal vlrcompra) {
         this.vlrcompra = vlrcompra;
     }
 
-    public Double getVlrvenda() {
+    public BigDecimal getVlrvenda() {
         return vlrvenda;
     }
 
-    public void setVlrvenda(Double vlrvenda) {
+    public void setVlrvenda(BigDecimal vlrvenda) {
         this.vlrvenda = vlrvenda;
     }
 
