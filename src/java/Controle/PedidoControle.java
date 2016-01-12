@@ -5,6 +5,7 @@
  */
 package Controle;
 
+import Dao.DetalhePedidoDao;
 import Dao.PedidoDao;
 import Dao.ProdutoDao;
 import Modelo.Cliente;
@@ -35,7 +36,7 @@ public class PedidoControle {
         System.out.println("PEDIDO CONTROLE");
         pedido = new Pedido();
 //        pedido.setCliente(new Cliente());
-        pedido.adicionarItemVazio();        
+        pedido.adicionarItemVazio();
     }
 
     //Métodos dos botões 
@@ -44,7 +45,9 @@ public class PedidoControle {
         System.out.println("CADASTRANDO PEDIDO: produto /tamanho "
                 + this.pedido.getDetalhePedidoList().isEmpty()
                 + this.pedido.getDetalhePedidoList().size());
+        this.pedido.removerItemVazio();
         new PedidoDao().inserir(pedido);
+
     }
 
     public void carregarProdutoLinhaEditavel() {
@@ -59,7 +62,7 @@ public class PedidoControle {
                 item.setIdPedido(pedido);
                 item.setIdProduto(produtoLinhaEditavel);
                 item.setVlrUnitario(produtoLinhaEditavel.getVlrvenda());
-                
+
                 pedido.adicionarItemVazio();
                 produtoLinhaEditavel = null;
                 FacesUtil.addInfoMessage("adicionado.");
@@ -93,7 +96,6 @@ public class PedidoControle {
         return pedido;
     }
 
-    
     public List<Pedido> getPedidos() {
         return pedidos;
     }

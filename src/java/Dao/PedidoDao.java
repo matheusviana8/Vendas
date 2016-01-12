@@ -30,17 +30,18 @@ public class PedidoDao {
 
     private Session session;
 
-    public void inserir(Pedido pedido) {
+    public boolean inserir(Pedido pedido) {
         session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             session.beginTransaction();
             session.save(pedido);
             session.getTransaction().commit();
-
+            return true;
         }catch(Exception e){
+            session.getTransaction().rollback();
             e.printStackTrace();
-            
+            return false;
         } finally {
             session.close();
 
@@ -55,6 +56,10 @@ public class PedidoDao {
             List<Pedido> lista = session.createQuery("from Pedido").list();
             session.getTransaction().commit();
             return lista;
+        } catch(Exception e){
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
         } finally {
             session.close();
 

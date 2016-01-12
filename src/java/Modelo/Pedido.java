@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +59,7 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "cliente", referencedColumnName = "id")
     @ManyToOne
     private Cliente cliente;
-    @OneToMany(mappedBy = "idPedido")
+    @OneToMany(mappedBy = "idPedido",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<DetalhePedido> detalhePedidoList = new ArrayList<>();
 
     public Pedido() {
@@ -72,8 +74,11 @@ public class Pedido implements Serializable {
 			item.setIdPedido(this);
 			
 			this.getDetalhePedidoList().add(0, item);
-		
+	    
 	}
+      public void removerItemVazio() {
+      this.getDetalhePedidoList().remove(0);
+    }
         
     public Pedido(Integer id) {
         this.id = id;
@@ -160,5 +165,5 @@ public class Pedido implements Serializable {
     public String toString() {
         return "Modelo.Pedido[ id=" + id + " ]";
     }
-    
+
 }

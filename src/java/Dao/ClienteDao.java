@@ -6,11 +6,14 @@
 package Dao;
 
 import Modelo.Cliente;
+import Modelo.Produto;
 import Util.HibernateUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -63,9 +66,14 @@ public class ClienteDao {
         System.out.println("GERANDO RELATORIO...");
 
         List<Cliente> lista = listar();
+        List<Produto> lista2 = new ProdutoDao().listar();
+        
+        Map parametros = new HashMap();
+        parametros.put("listaProduto", lista2);
+        
         InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/report1.jrxml");
         JasperReport report = JasperCompileManager.compileReport(relatorioStream);
-        JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(lista));
+        JasperPrint print = JasperFillManager.fillReport(report, parametros, new JRBeanCollectionDataSource(lista));
 
         ByteArrayOutputStream Teste = new ByteArrayOutputStream();
         JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
