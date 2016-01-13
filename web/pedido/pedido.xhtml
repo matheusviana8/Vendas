@@ -21,7 +21,9 @@ and open the template in the editor.
                 <p:outputLabel value="Cliente:" for="cliente" />
                 <p:autoComplete id="cliente" value="#{pedidoControle.pedido.cliente}" completeMethod="#{clienteController.complete}"
                                 var="c" itemLabel="#{c.nome}" itemValue="#{c}"
-                                forceSelection="true">
+                                forceSelection="true"
+                                styleClass="produto-tabela"
+                                >
                     <p:ajax event="itemSelect" update="dadosCliente"/>
                 </p:autoComplete><br/>
                 <p:outputLabel value="CPF: #{pedidoControle.pedido.cliente.cpf}" /><br/>
@@ -32,8 +34,8 @@ and open the template in the editor.
 
                 <p:dataTable id="tabPedido" rowIndexVar="linha"
                              var="item" value="#{pedidoControle.pedido.detalhePedidoList}">
-
-                    <p:column headerText="Produto">
+                   
+                    <p:column headerText="Produto" style="text-align: center; width:400px">
                         <h:outputText value="#{item.idProduto.descricao}" rendered="#{item.produtoAssociado}" />
                         <p:autoComplete value="#{pedidoControle.produtoLinhaEditavel}"
                                         completeMethod="#{produtoControle.complete}"
@@ -45,20 +47,20 @@ and open the template in the editor.
                                     update="tabPedido"/>
                         </p:autoComplete>
                     </p:column>
-                    <p:column headerText="Quantidade">
-                        <p:inputText size="8" value="#{item.quantidade}">
+                    <p:column headerText="Quantidade" style="text-align: center; width: 200px">
+                        <p:spinner size="8" value="#{item.quantidade}" min="0">
                             <p:ajax event="change" process="@this"
                                     update="tabPedido"
                                     listener="#{pedidoControle.atualizarQuantidade(item, linha)}" />
-                        </p:inputText>
+                        </p:spinner>
                     </p:column>
-                    <p:column headerText="Valor unitário">
+                    <p:column headerText="Valor unitário" style="text-align: right; width: 180px">
                         <h:outputText value="#{item.vlrUnitario}" >
                             <f:convertNumber type="currency"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Valor total" style="text-align: right; width: 100px">
+                    <p:column headerText="Valor total" style="text-align: right; width: 150px">
                         <h:outputText value="#{item.valorTotal}">
                             <f:convertNumber type="currency"/>
                         </h:outputText>
