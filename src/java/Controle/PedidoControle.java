@@ -65,6 +65,9 @@ public class PedidoControle {
 
                 pedido.adicionarItemVazio();
                 produtoLinhaEditavel = null;
+                
+                this.pedido.recalcularValorTotal();
+                
                 FacesUtil.addInfoMessage("adicionado.");
             }
         }
@@ -79,12 +82,18 @@ public class PedidoControle {
 			}
 		}
 		
-//		this.pedido.recalcularValorTotal();
+		this.pedido.recalcularValorTotal();
 	}
 
     public List<Pedido> listar() {
         return pedidos = new PedidoDao().listar();
     }
+    
+    public void recalcularPedido() {
+		if (this.pedido != null) {
+			this.pedido.recalcularValorTotal();
+		}
+	}
 
     private boolean existeItemComProduto(Produto produto) {
         boolean existeItem = false;

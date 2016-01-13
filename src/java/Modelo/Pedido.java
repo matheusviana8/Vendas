@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p")})
 public class Pedido implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,33 +54,52 @@ public class Pedido implements Serializable {
     private Date prazoEntrega;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "vlrDesconto")
-    private Double vlrDesconto;
+    private BigDecimal vlrDesconto = BigDecimal.ZERO;
     @Column(name = "vlrTotal")
-    private Double vlrTotal;
+    private BigDecimal vlrTotal = BigDecimal.ZERO;
     @JoinColumn(name = "cliente", referencedColumnName = "id")
     @ManyToOne
     private Cliente cliente;
-    @OneToMany(mappedBy = "idPedido",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idPedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetalhePedido> detalhePedidoList = new ArrayList<>();
 
     public Pedido() {
     }
-    
+
     public void adicionarItemVazio() {
-		
-			Produto produto = new Produto();
-			
-			DetalhePedido item = new DetalhePedido();
-			item.setIdProduto(produto);
-			item.setIdPedido(this);
-			
-			this.getDetalhePedidoList().add(0, item);
-	    
-	}
-      public void removerItemVazio() {
-      this.getDetalhePedidoList().remove(0);
+
+        Produto produto = new Produto();
+
+        DetalhePedido item = new DetalhePedido();
+        item.setIdProduto(produto);
+        item.setIdPedido(this);
+
+        this.getDetalhePedidoList().add(0, item);
+
     }
-        
+
+    public void removerItemVazio() {
+        this.getDetalhePedidoList().remove(0);
+    }
+
+    public void recalcularValorTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        total = total.add(this.getVlrDesconto());
+
+        for (DetalhePedido item : this.getDetalhePedidoList()) {
+            if (item.getIdProduto() != null && item.getIdProduto().getId() != null) {
+                total = total.add(item.getValorTotal());
+            }
+        }
+
+        this.setVlrTotal(total);
+    }
+    
+    public BigDecimal getValorSubtotal() {
+		return this.getVlrTotal().subtract(this.getVlrDesconto());
+	}
+
     public Pedido(Integer id) {
         this.id = id;
     }
@@ -108,19 +128,19 @@ public class Pedido implements Serializable {
         this.prazoEntrega = prazoEntrega;
     }
 
-    public Double getVlrDesconto() {
+    public BigDecimal getVlrDesconto() {
         return vlrDesconto;
     }
 
-    public void setVlrDesconto(Double vlrDesconto) {
+    public void setVlrDesconto(BigDecimal vlrDesconto) {
         this.vlrDesconto = vlrDesconto;
     }
 
-    public Double getVlrTotal() {
+    public BigDecimal getVlrTotal() {
         return vlrTotal;
     }
 
-    public void setVlrTotal(Double vlrTotal) {
+    public void setVlrTotal(BigDecimal vlrTotal) {
         this.vlrTotal = vlrTotal;
     }
 
