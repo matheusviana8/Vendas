@@ -9,52 +9,65 @@
     </h:head>
     <h:body>
         Pagina inicial
-        <p:dataTable value="#{pedidoControle.listar()}"
-                     var="item" 
+        <h:form>
+            <p:dataTable id="tabPedidos"
+            value="#{pedidoControle.listar()}"
+                     var="item"
+                     selection="#{pedidoControle.pedido}"
+                     selectionMode="single" rowKey="#{item.id}"
                      >
             <f:facet name="header">
-        Lista de Vendas
-    </f:facet>
-            <p:column headerText="Data de Venda">
-                <h:outputText value="#{item.dataVenda}" />
+                Lista de Vendas
+            </f:facet>
+
+            <p:column style="width:16px">
+                <p:rowToggler />
             </p:column>
+
             <p:column headerText="Nome do Cliente">
-                <h:outputText value="#{item.idCliente.nome}" />
+                <h:outputText value="#{item.cliente.nome}" />
             </p:column>
+
+            <p:column headerText="Data de Venda">
+                <h:outputText value="#{item.data}" />
+            </p:column>
+            <p:column headerText="Valor Total">
+                <h:outputText value="#{item.vlrTotal}" />
+            </p:column>
+         
+            <p:rowExpansion>
+                <p:panelGrid columns="1">
+                    <p:dataTable var="sub" value="#{item.detalhePedidoList}">
+                        <p:column headerText="Descrição">
+                            <h:outputText value="#{sub.idProduto.descricao}" />
+                        </p:column>
+                        <p:column headerText="Valor Unitário">
+                            <h:outputText value="#{sub.vlrUnitario}">
+                                <f:convertNumber type="currency" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Quantidade">
+                            <h:outputText value="#{sub.quantidade}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+            </p:rowExpansion>  
 
         </p:dataTable>
 
         <p:separator/>
 
-        <h:form>
-            <p:commandButton id="exportar1" value="Emitir Relatório" ajax="false">
-                <p:fileDownload value="#{clienteController.emitir()}" />
+        
+        <p:commandButton value="Emitir Relatório" process="tabPedidos" ajax="false">
+                <p:fileDownload value="#{pedidoControle.emitir()}" />
             </p:commandButton>
         </h:form>
-
         <p:separator/>
 
-        <h:form>
-            <p:panelGrid columns="2">
-                <p:outputLabel for="city" value="Cliente: " />
-                <p:selectOneMenu id="city" value="#{pedidoControle.venda.idCliente.id}">
-                    <f:selectItem itemLabel="Selecione o cliente" itemValue="" />
-                    <f:selectItems value="#{clienteController.listar()}" 
-                                   var="item" itemValue="#{item.id}"  itemLabel="#{item.nome}" />
-                </p:selectOneMenu>
-
-                <p:outputLabel value="Venda:"/>
-                <p:calendar value="#{pedidoControle.venda.dataVenda}" />
-            </p:panelGrid>
-            <p:commandButton action="#{pedidoControle.cadastrar()}" value="Salvar"/>
-        </h:form>
-
-        <p:separator/>
-        
         <br />
         <h:link outcome="/cadastro/cliente.xhtml" value="Página de Cadastro de Cliente" /> <br />
         <h:link outcome="/index.xhtml" value="Página Inicial" />
-        
+
     </h:body>
 </html>
 

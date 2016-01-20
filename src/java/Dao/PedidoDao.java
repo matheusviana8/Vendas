@@ -10,6 +10,7 @@ import Util.HibernateUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
@@ -66,12 +67,14 @@ public class PedidoDao {
         }
     }
 
-    public DefaultStreamedContent emitir() throws JRException {
+    public DefaultStreamedContent emitir(Pedido pedido) throws JRException {
 
         System.out.println("GERANDO RELATORIO...");
 
-        List<Pedido> lista = listar();
-        InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/Pedido.jrxml");
+        List<Pedido> lista = new ArrayList<Pedido>();
+        lista.add(pedido);
+        
+        InputStream relatorioStream = this.getClass().getResourceAsStream("/relatorio/Venda.jrxml");
         JasperReport report = JasperCompileManager.compileReport(relatorioStream);
         JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(lista));
         

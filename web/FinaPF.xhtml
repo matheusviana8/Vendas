@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="conteudo">
+            <p:growl id="growl" globalOnly="true" life="2000"/>
+            <style type="text/css">
+                .colored {
+                    background-color: #FF0000;
+                    color: blue;
+                }
+            </style>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:dialog widgetVar="statusDialog" draggable="false" closable="false" resizable="false" showHeader="false">
+                Aguarde ...
+                <p:graphicImage value="/resources/demo/images/loader.gif"/>
+            </p:dialog>
+            <h:form id="FinanceiroPfEditForm" styleClass="upPercase" rendered="#{planodesenhaControle.buscar(usuarioControle.usuario.idUsuario,14).podeAcessar}">
+                <p:panel header="Financeiro Pessoa Fisica">
+
+                    <h:panelGrid columns="1">
+
+                        <h:panelGrid columns="10"> 
+                            <p:outputLabel value="Nome: " style="font-size: 12pt;"/>
+                            <p:outputLabel value="#{pessoafisicaControle.pessoafisicaSelecionado.nomePf}" styleClass="destaqueAzul" style="font-size: 12pt;"/>
+
+                            <p:outputLabel value="N° de Registro: " style="font-size: 10pt;"/>
+                            <p:outputLabel value="#{pessoafisicaControle.pessoafisicaSelecionado.registroPf}" styleClass="destaqueAzul" style="font-size: 10pt;"/>  
+
+                            <p:outputLabel value="Classificação: " style="font-size: 10pt;"/> 
+                            <p:outputLabel value="#{pessoafisicaControle.pessoafisicaSelecionado.categoriaPf}" styleClass="destaqueAzul" style="font-size: 10pt;"/>  
+
+                            <p:outputLabel value="Categoria: " style="font-size: 10pt;"/> 
+                            <p:outputLabel value="#{tipoderegistroControle.buscar(pessoafisicaControle.pessoafisicaSelecionado.tipoCategoria).descricao}" styleClass="destaqueAzul" style="font-size: 10pt;"/>  
+
+                            <p:outputLabel value="N° Protocolo: " style="font-size: 10pt;"/> 
+                            <p:outputLabel value="#{pessoafisicaControle.pessoafisicaSelecionado.protocolo}" styleClass="destaqueAzul" style="font-size: 10pt;"/>  
+
+                        </h:panelGrid>
+
+                        <p:column>
+                            <h:panelGrid columns="4" style="margin-top: 10px;">
+                                <p:panel styleClass="infFinanPF"> 
+                                    <h:panelGrid columns="1">
+                                        <p:outputLabel value="Total Vencidos"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="4">
+                                        <p:outputLabel value="Parcelas:"/>
+                                        <h:outputText value="30" style="color: red"/>
+                                        <p:outputLabel value="| Anuidades: "/>
+                                        <h:outputText value="4" style="color: red"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                                <p:panel styleClass="infFinanPF">
+                                    <h:panelGrid columns="1">
+                                        <p:outputLabel value="Total A Vencer"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="4">
+                                        <p:outputLabel value="Parcelas:"/>
+                                        <h:outputText id="vl2" value="12" style="color: red"/>
+                                        <p:outputLabel value="| Anuidades: "/> 
+                                        <h:outputText id="vl1" value="2" style="color: red"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                                <p:panel styleClass="infFinanPF">
+                                    <h:panelGrid columns="1">
+                                        <p:outputLabel value="Total Da Divida"/> 
+                                        <h:panelGrid columns="2">
+                                            <h:outputText value="R$:"/>
+                                            <h:outputText value="3489" style="color: red"><f:convertNumber pattern="#0.00" /></h:outputText>
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                </p:panel>
+                            <p:button styleClass="infFinanPF" icon="ui-icon-circle-arrow-e"
+                                      rendered="#{pessoafisicaControle.origem==1?'true':'false'}"
+                                      value="Voltar para o cadastro" 
+                                      outcome="/cadastro/pessoafisica/Edit.xhtml" />
+                            </h:panelGrid>
+
+                        </p:column>
+
+                    </h:panelGrid>
+
+
+                    <p:tabView id="tabViewPF" style="background: #F0F8FF;" dynamic="true">
+                        <p:tab title="Débitos" id="tab1Juridico">
+
+                            <p:dataTable id="basicFPF" value="#{boletoControlePF.selectAll(pessoafisicaControle.pessoafisicaSelecionado.registroPf,'D',0)}" 
+                                         var="item"
+                                         selection="#{boletoControlePF.boletosSelecionados}"
+                                         scrollRows="6" scrollable="true" scrollHeight="180"
+                                         rowKey="#{item.idDebito}"
+                                         emptyMessage="Nenhum registro encontrado"
+                                         rowStyleClass="#{item.visualiza == 'A' ? 'colored' : null}"
+                                         style="font-size: 10pt;"
+                                         > 
+
+
+                                <p:ajax event="rowSelect" update=":FinanceiroPfEditForm:tabViewPF:botoes" /> 
+                                <p:ajax event="rowSelectCheckbox" update=":FinanceiroPfEditForm:tabViewPF:botoes" /> 
+
+                                <f:facet name="header">
+                                    ANUIDADES EM ABERTO - SELECIONE OS DEBITOS PARA IMPRESSÃO DOS BOLETOS                                 
+                                </f:facet>
+                                <p:column style="width:16px">
+                                    <!--muda a cor da linha caso haja registros agrupados-->
+                                    <p:rowToggler  rendered="#{(item.visualiza)=='A'?'true':'false'}"  />
+                                </p:column>
+                                <p:column  selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                                <p:column headerText="Titulo" width="60">
+                                    <h:outputText value="#{item.idDebito}"/>
+                                </p:column>                                                                    
+                                <p:column headerText="Ano" width="25">
+                                    <h:outputText value="#{item.anoRef}"/>
+                                </p:column>                                                                    
+                                <p:column headerText="Par." width="20">
+                                    <h:outputText value="#{item.parcelaRefPFPJ}" />
+                                </p:column>
+                                <p:column headerText="Principal" width="48">
+                                    <h:outputText value="#{item.valorPrincipal}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>
+                                <p:column headerText="Vencimento" width="75">
+                                    <h:outputText value="#{item.vencimento}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                                </p:column>                                                                    
+                                <p:column headerText="Multa" width="40">
+                                    <h:outputText value="#{item.valorMulta}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>
+                                <p:column headerText="Juros" width="40">
+                                    <h:outputText value="#{item.valorJuros}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>                                                                    
+                                <p:column headerText="Valor Atual" width="55">
+                                    <h:outputText value="#{item.valorCorrigido}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>                                                                    
+                                <p:column headerText="Historico" >
+                                    <h:outputText value="#{item.historico}" />
+                                </p:column>                                                                    
+                                <p:column headerText="Qtd Parc." width="23">
+                                    <h:outputText value="#{item.parcelado}" />
+                                </p:column>  
+
+                                <p:rowExpansion>
+
+                                    <p:dataTable id="subFPF" 
+                                                 value="#{boletoControlePF.selectAll(pessoafisicaControle.pessoafisicaSelecionado.registroPf,'D',item.idDebito)}" 
+                                                 var="sub"
+                                                 scrollRows="6" scrollable="true"                                                 
+                                                 rowKey="#{sub.idDebito}"
+                                                 emptyMessage="Registro não agrupado."
+                                                 style="font-size: 9pt;"
+                                                 > 
+
+
+
+                                        <p:column headerText="Ano" width="25">
+                                            <h:outputText value="#{sub.anoRef}"/>
+                                        </p:column>                                                                    
+                                        <p:column headerText="Titulo" width="60">
+                                            <h:outputText value="#{sub.paiD}"/>
+                                        </p:column>                                                                    
+                                        <p:column headerText="Par." width="20">
+                                            <h:outputText value="#{sub.parcelaRefPFPJ}" />
+                                        </p:column>
+                                        <p:column headerText="Principal" width="50">
+                                            <h:outputText value="#{sub.valorPrincipal}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Vencimento" width="75">
+                                            <h:outputText value="#{sub.vencimento}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                                        </p:column>                                                                    
+                                        <p:column headerText="Multa" width="40">
+                                            <h:outputText value="#{sub.valorMulta}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Juros" width="40">
+                                            <h:outputText value="#{sub.valorJuros}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                        </p:column>                                                                    
+                                        <p:column headerText="Valor Atual" width="55">
+                                            <h:outputText value="#{sub.valorCorrigido}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                        </p:column>                                                                    
+                                        <p:column headerText="Historico" >
+                                            <h:outputText value="#{sub.historico}" />
+                                        </p:column>                                                                    
+                                        <p:column headerText="Qtd Parc." width="23">
+                                            <h:outputText value="#{sub.parcelado}" />
+                                        </p:column>  
+                                    </p:dataTable>
+                                </p:rowExpansion>  
+
+                            </p:dataTable>
+
+                            <br/>
+                            <h:panelGrid id="botoes" columns="5" styleClass="panelGridBotoesFinaPF">
+                                <p:button value="Buscar" icon="ui-icon-search" outcome="/financeiro/financeiroPF/List.xhtml" />
+                                <p:commandButton icon="ui-icon-circle-check" value="Taxas" type="button" onclick="PF('taxas').show();" />
+                                <p:commandButton icon="ui-icon-carat-1-e" value="Emitir Extrato" type="button" onclick="PF('extrato').show();"/>
+                                <p:commandButton icon="ui-icon-print" value="Boletos" oncomplete="PF('guias').show()" update="boleto" process="basicFPF" />
+                                <p:commandButton icon="ui-icon-plus" value="Agrupar " type="button"/>
+                                <p:commandButton icon="ui-icon-arrowreturn-1-w" value="Desagrupar " action="#{boletoControlePF.desagrupar()}" immediate="true" update=":growl,:FinanceiroPfEditForm:tabViewPF:basicFPF"/>
+                                <p:button icon="ui-icon-document" value="Marcar Dau"/>
+                                <p:button icon="ui-icon-calculator" value="Descontos"/>
+                                <p:commandButton icon="ui-icon-carat-1-e" value="Negociar" type="button" onclick="PF('negociar').show();"/>
+                                <p:commandButton icon="ui-icon-carat-1-e" value="Nada Consta" type="button" onclick="PF('consta').show();"/>
+                                <p:commandButton icon="ui-icon-carat-1-e" value="Termos" type="button" onclick="PF('termos').show();"/>
+                                <p:commandButton icon="ui-icon-carat-1-e" value="Parcelamentos" type="button" onclick="PF('parcelamentos').show();" />
+                                <p:commandButton icon="ui-icon-carat-1-e" value="Desf. Parcelam." type="button" onclick="PF('buscar').show();" />                               
+                            </h:panelGrid>
+
+                            <p:dialog dynamic="true" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      header="Boletos" widgetVar="guias" width="70%" height="600">
+                                <p:outputPanel id="boleto" style="text-align:center; width: 100%; height: 100%">
+                                    <p:media cache="false" value="#{boletoControlePF.gerarBoleto(boletoControlePF.boletosSelecionados)}" width="100%" height="100%" player="pdf" />
+                                </p:outputPanel>
+                            </p:dialog>
+
+                            <p:dialog header="Taxas" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="taxas" height="100%" >
+
+                                <h:panelGrid columns="1">
+
+                                    <p:outputLabel value="SELECIONE O TIPO DE TAXA:" for="situacaoPF"/>
+                                    <br/>
+                                    <p:selectOneMenu id="situacaoPF" value="#" required="true" requiredMessage="O campo taxa é obrigatório." >                                  
+                                        <f:selectItem itemLabel="SELECIONE..." /> 
+                                        <f:selectItem itemLabel="DSFADSFASDFASDFASDFADFASD" itemValue="e"  />
+                                        <f:selectItem itemLabel="DFASDFASDFASDFASDFSDFASDFA" itemValue="e"  />                                                                                                                    
+                                    </p:selectOneMenu>
+
+                                </h:panelGrid>
+
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+
+                            <p:dialog header="Negociar" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="negociar">
+                                <p:panel>
+                                    <h:panelGrid columns="3" cellpadding="10">
+                                        <p:outputLabel value="Valor do débito R$:" for="valordebito"/>                              
+                                        <p:outputLabel id="valordebito" value="200,00" /> 
+
+                                        <p:commandButton icon="ui-icon-circle-check" value="Usar Principal" type="button" onclick="PF('usarprincipal').show();" />
+
+                                        <p:dialog header="Autorização" 
+                                                  modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                                  widgetVar="usarprincipal">
+                                            <p:outputLabel value="A senha deve ser informada"/>
+                                            <br/><br/>
+                                            <h:panelGrid columns="2">
+                                                <p:inputText/>
+                                                <p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />                              
+                                            </h:panelGrid>   
+                                        </p:dialog>
+
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" cellspacing="10">
+                                        <p:outputLabel value="Quantidade de parcelas:" for="quantidadeparcelas"/>                            
+                                        <p:selectOneMenu id="quantidadeparcelas" value="#">                                  
+                                            <f:selectItem itemLabel=" 2 " itemValue="2"  />
+                                            <f:selectItem itemLabel=" 3 " itemValue="3"  />                                                                                                                              
+                                            <f:selectItem itemLabel=" 4 " itemValue="4"  />                                                                                                                              
+                                            <f:selectItem itemLabel=" 5 " itemValue="5"  />                                                                                                                              
+                                            <f:selectItem itemLabel=" 6 " itemValue="6"  />   
+                                            <f:selectItem itemLabel=" 7 " itemValue="7"  /> 
+                                            <f:selectItem itemLabel=" 8 " itemValue="8"  />
+                                            <f:selectItem itemLabel=" 9 " itemValue="9"  />
+                                            <f:selectItem itemLabel=" 10 " itemValue="10" />                                                                                                                                                                     
+                                            <f:selectItem itemLabel=" 11 " itemValue="11" />
+                                            <f:selectItem itemLabel=" 12 " itemValue="12" />
+                                            <f:selectItem itemLabel=" 13 " itemValue="13" />                                                                                                                              
+                                            <f:selectItem itemLabel=" 14 " itemValue="14" />                                                                                                                              
+                                            <f:selectItem itemLabel=" 15 " itemValue="15" />                                                                                                                              
+                                            <f:selectItem itemLabel=" 16 " itemValue="16" />   
+                                            <f:selectItem itemLabel=" 17 " itemValue="17" /> 
+                                            <f:selectItem itemLabel=" 18 " itemValue="18" />
+                                            <f:selectItem itemLabel=" 19 " itemValue="19" />
+                                            <f:selectItem itemLabel=" 20 " itemValue="20" />                                                                                                                                                                     
+                                            <f:selectItem itemLabel=" 21 " itemValue="21" />
+                                            <f:selectItem itemLabel=" 22 " itemValue="22" />
+                                            <f:selectItem itemLabel=" 23 " itemValue="23" />                                                                                                                              
+                                            <f:selectItem itemLabel=" 24 " itemValue="24" />                                                                                                                              
+                                            <f:selectItem itemLabel=" 25 " itemValue="25" />                                                                                                                              
+                                            <f:selectItem itemLabel=" 26 " itemValue="26" />   
+                                            <f:selectItem itemLabel=" 27 " itemValue="27" /> 
+                                            <f:selectItem itemLabel=" 28 " itemValue="28" />
+                                            <f:selectItem itemLabel=" 29 " itemValue="29" />
+                                            <f:selectItem itemLabel=" 30 " itemValue="30" />                                                                                                                                                                     
+                                        </p:selectOneMenu>    
+
+                                        <p:outputLabel value="Vencimento da 1º parcela:" for="venvimentoprimeira"/>                               
+                                        <p:calendar locale="pt" id="venvimentoprimeira" pattern="dd/MM/yyyy"><f:convertDateTime pattern="dd/MM/yyyy"/></p:calendar>  
+                                    </h:panelGrid>
+                                </p:panel>
+                                <p:separator/>
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+
+                            <p:dialog header="Extrato" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="extrato" minHeight="200" height="500" minWidth="900" width="900">
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+
+                            <p:dialog header="Consta" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="consta" minHeight="200" height="500" minWidth="900" width="900">
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+
+                            <p:dialog header="Termos" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="termos" minHeight="200" height="100%" minWidth="900" width="900">
+                                <p:dataTable id="tbCentral" value="#{boletoControlePF.selectAll('1433','P',0)}" var="item"
+                                             selection="#{boletoControlePF.boletosSelecionados}" 
+                                             scrollRows="6" scrollable="true" scrollHeight="180"
+                                             rowKey="#{item.idDebito}"                                           
+                                             emptyMessage="Nenhum registro encontrado"
+                                             style="font-size: 10pt;"
+                                             > 
+                                    <f:facet name="header">
+                                        TERMOS DE CONFISSÃO DE DÍVIDA - CLIQUE NA LINHA PARA IMPRIMIR
+                                    </f:facet>      
+                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                    <p:column headerText="Número" width="37">
+                                        <h:outputText value="#"/>
+                                    </p:column>                                                                    
+                                    <p:column headerText="Data" width="65">
+                                        <h:outputText value="#{item.dataPG}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Historico">
+                                        <h:outputText value="#{item.historico}" />
+                                    </p:column>                                                                    
+                                    <p:column headerText="Parc." width="23">
+                                        <h:outputText value="#{item.parcelaRefPFPJ}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Valor" width="52">
+                                        <h:outputText value="#{item.valorPrincipal}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                    </p:column>                                                                    
+                                    <p:column headerText="Total" width="52">
+                                        <h:outputText value="#{item.valorPrincipal}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Situação" width="45">
+                                        <h:outputText value="#{item.visualiza}" />
+                                    </p:column> 
+                                </p:dataTable>
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+
+                            <p:dialog header="Parcelamentos" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="parcelamentos" height="100%">
+                                <h:panelGrid columns="2">
+                                    <p:panel styleClass="coluna9">
+                                        <p:outputLabel value="Nome: " >
+                                            <p:outputLabel value="#{pessoafisicaControle.pessoafisicaSelecionado.nomePf}"/>
+                                        </p:outputLabel>
+                                    </p:panel>
+                                    <p:panel styleClass="coluna1">
+                                        <p:outputLabel value="Registro: " >
+                                            <p:outputLabel value="#{pessoafisicaControle.pessoafisicaSelecionado.registroPf}" />  
+                                        </p:outputLabel>
+                                    </p:panel>
+                                </h:panelGrid>
+                                <br/>
+                                <p:fieldset legend="Perfil do parcelamento">
+                                    <h:panelGrid columns="2">
+                                        <p:outputLabel value="Valor Total R$:"/>
+                                        <p:inputText value=""><f:convertNumber pattern="#0.00" /></p:inputText>
+                                        <p:outputLabel value="Quantidade de parcelas:"/>
+                                        <p:inputText value=""/>
+                                        <p:outputLabel value="Valor de cada parcela R$:"/>
+                                        <p:inputText value=""><f:convertNumber pattern="#0.00" /></p:inputText>
+                                        <p:outputLabel value="vencimento da primeira:"/>
+                                        <p:calendar locale="pt" mask="true" pattern="dd/MM/yyyy"/>                                       
+                                    </h:panelGrid>
+                                </p:fieldset>
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+
+                            <p:dialog header="Parcelam" 
+                                      modal="true" appendTo="@(body)" resizable="false" draggable="false"
+                                      widgetVar="parcelam" minHeight="200" height="500" minWidth="900" width="900">
+                                <br/>
+                                <p:commandButton icon="ui-icon-check" value="Prosseguir"/>
+                                <p:button icon="ui-icon-cancel" value="#{bundle.Cancel}"/>
+                            </p:dialog>
+                        </p:tab>
+                        <p:tab title="Pagamentos" id="tab2Juridico">
+
+                            <p:dataTable id="pagamentosFPF" value="#{boletoControlePF.selectAll(pessoafisicaControle.pessoafisicaSelecionado.registroPf,'P',0)}" var="item"
+                                         selection="#{boletoControlePF.boletosSelecionados}"                                       
+                                         rowKey="#{item.idDebito}" 
+                                         paginator="true"
+                                         paginatorPosition="bottom"
+                                         emptyMessage="Nenhum registro encontrado"
+                                         style="font-size: 10pt;"
+                                         rows="6"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         > 
+                                <f:facet name="header">
+                                    PAGAMENTOS                                       
+                                </f:facet>      
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                <p:column headerText="Ano" width="28">
+                                    <h:outputText value="#{item.anoRef}"/>
+                                </p:column>                                                                    
+                                <p:column headerText="Par." width="20">
+                                    <h:outputText value="#{item.parcelaRefPFPJ}" />
+                                </p:column>
+                                <p:column headerText="Principal" width="50">
+                                    <h:outputText value="#{item.valorPrincipal}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>
+                                <p:column headerText="Vencimento" width="75">
+                                    <h:outputText value="#{item.vencimento}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                                </p:column>                                                                    
+                                <p:column headerText="Multa" width="40">
+                                    <h:outputText value="#{item.valorMulta}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>
+                                <p:column headerText="Juros" width="40">
+                                    <h:outputText value="#{item.valorJuros}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>                                                                    
+                                <p:column headerText="Valor Atual" width="55">
+                                    <h:outputText value="#{item.valorCorrigido}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:column>                                                                    
+                                <p:column headerText="Historico" >
+                                    <h:outputText value="#{item.historico}" />
+                                </p:column>                                                                    
+                                <p:column headerText="Qtd Parc." width="23">
+                                    <h:outputText value="#{item.parcelado}" />
+                                </p:column>                                                                  
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

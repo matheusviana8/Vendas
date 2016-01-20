@@ -86,7 +86,8 @@ public class PedidoControle {
 	}
 
     public List<Pedido> listar() {
-        return pedidos = new PedidoDao().listar();
+        pedidos = new PedidoDao().listar();
+        return pedidos;
     }
     
     public void recalcularPedido() {
@@ -109,8 +110,8 @@ public class PedidoControle {
     }
 
     public DefaultStreamedContent emitir() throws JRException {
-
-        return new PedidoDao().emitir();
+        System.out.println("emitir controle: id= "+pedido.getId());
+        return new PedidoDao().emitir(pedido);
     }
 
     public Pedido getPedido() {
@@ -141,5 +142,12 @@ public class PedidoControle {
         }
 
     }
+
+    public void setPedido(Pedido pedido) {
+        System.out.println("SET PEDIDO");
+        this.pedido = pedido;
+    }
+    
+    
 
 }
