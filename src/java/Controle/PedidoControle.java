@@ -148,6 +148,9 @@ public class PedidoControle {
         this.pedido = pedido;
     }
     
+    public boolean isEditando() {
+		return this.pedido.getId() != null;
+	}
     
 
 }
