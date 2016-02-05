@@ -10,14 +10,14 @@ import Modelo.Produto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author MATHEUS
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class ProdutoControle {
     private Produto produto;
     private List<Produto> produtos;
@@ -28,9 +28,26 @@ public class ProdutoControle {
        
     }
     
+     public void novo(){
+        produto = new Produto();
+       
+    }
+    
     public void salvar(){
+        System.out.println("SALVAR");
         dao.salvar(produto);
     }
+    
+     public void alterar(){
+         System.out.println("ALTERAR: "+produto.getId());
+        dao.alterar(produto);
+    }
+     
+     public void deletar(){
+         System.out.println("DELETAR: "+produto.getId());
+        dao.deletar(produto);
+    }
+     
      public List<Produto> listar() {
         return dao.listar();
     }
@@ -68,6 +85,8 @@ public class ProdutoControle {
         this.produtos = produtos;
     }
     
-    
+    public boolean isEditando() {
+		return this.produto.getId() != null;
+	}
     
 }

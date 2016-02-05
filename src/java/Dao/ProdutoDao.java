@@ -31,7 +31,6 @@ public class ProdutoDao {
     private Session session;
 
     public void salvar(Produto produto) {
-        System.out.println("dao salvar");
         session = HibernateUtil.getSessionFactory().openSession();
 
         try {
@@ -41,12 +40,46 @@ public class ProdutoDao {
 
         } catch (Exception e) {
             e.printStackTrace();
+             session.getTransaction().rollback();
         } finally {
             session.close();
-
+           
         }
     }
 
+     public void alterar(Produto produto) {
+        session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            session.update(produto);
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+             session.getTransaction().rollback();
+        } finally {
+            session.close();
+           
+        }
+    }
+     public void deletar(Produto produto) {
+        session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            session.delete(produto);
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+             session.getTransaction().rollback();
+        } finally {
+            session.close();
+           
+        }
+    }
+    
     public List<Produto> listar() {
         session = HibernateUtil.getSessionFactory().openSession();
 

@@ -15,9 +15,12 @@
                 <p:toolbarGroup>
                     <p:commandButton value="Novo" actionListener="#{produtoControle.novo}" 
                                      oncomplete="PF('cadastro').show()" update=":dlgProduto"/>
-                    <p:commandButton value="Alterar" id="botaoAlterar" process="tabProdutos"
+                    <p:commandButton value="Alterar" 
                                      oncomplete="PF('cadastro').show()"
                                      update=":dlgProduto" />
+                    <p:commandButton value="Excluir" 
+                                     action="#{produtoControle.deletar()}"
+                                     update=":formProduto" />
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">
                     <p:button value="Pesquisa" outcome="/produto/lista" />
@@ -30,10 +33,7 @@
                          selection="#{produtoControle.produto}"
                          selectionMode="single" rowKey="#{item.id}"
                          >
-                <f:facet name="header">
-                    Produtos
-                </f:facet>
-
+              
                 <p:column headerText="Código">
                     <h:outputText value="#{item.sku}" />
                 </p:column>
@@ -59,7 +59,7 @@
         <p:dialog id="dlgProduto" widgetVar="cadastro" modal="true"
                   header="#{produtoControle.editando ? 'Edição de produto' : 'Novo produto'}">
             <h:form id="formCadastro">
-                <h:inputText value="#{produtoControle.produto.id}"/>
+                <h:inputHidden value="#{produtoControle.produto.id}"/>
                 <p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px"
                              columnClasses="rotulo, campo">
 
@@ -80,9 +80,9 @@
                     <p:inputText id="estoque" size="10" maxlength="5"
                                  value="#{produtoControle.produto.estoque}" />
                 </p:panelGrid>
-                <p:commandButton value="Salvar" action="#{produtoControle.salvar()}"
+                <p:commandButton value="Salvar" action="#{produtoControle.salvar()}" oncomplete="PF('cadastro').hide()" update=":formProduto"
                                  rendered="#{produtoControle.editando ? 'false' : 'true'}" />
-                <p:commandButton value="Alterar" action="#{produtoControle.alterar()}"
+                 <p:commandButton value="Alterar" action="#{produtoControle.alterar()}" oncomplete="PF('cadastro').hide()" update=":formProduto"
                                  rendered="#{produtoControle.editando ? 'true' : 'false'}"/>
             </h:form>
         </p:dialog>
