@@ -1,54 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Cadastro de Produto</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </h:head>
-    <h:body>
-        <h:form>
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Produto</ui:define>
+
+    <ui:define name="corpo">
+        <h:form id="formProduto">
             <p:messages autoUpdate="true" closable="true" />
-	    	
-	    	<p:toolbar style="margin-top: 20px">
-	    		<p:toolbarGroup>
-	    			<p:button value="Novo" outcome="/produto/cadastro" />
-	    			<p:commandButton value="Salvar" id="botaoSalvar"
-                                                 action="#{produtoControle.salvar()}" update="@form" />
-	    		</p:toolbarGroup>
-	    		<p:toolbarGroup align="right">
-	    			<p:button value="Pesquisa" outcome="/produto/pesquisa.xhtml" />
-	    		</p:toolbarGroup>
-	    	</p:toolbar>
-	    	
-	    	<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px"
-	    			columnClasses="rotulo, campo">
-	    		<p:outputLabel value="SKU" for="sku"/>
-                        <p:inputText id="sku" size="20" maxlength="20" value="#{produtoControle.produto.sku}" />
-	    		
-	    		<p:outputLabel value="Nome" for="nome"/>
-                        <p:inputText id="nome" size="60" maxlength="80" value="#{produtoControle.produto.descricao}"/>
-	    		
-	    		
-	    		<p:outputLabel value="Valor unitário" for="valorUnitario"/>
-	    		<p:inputText id="valorUnitario" size="10" maxlength="10" styleClass="moeda"
-                                     value="#{produtoControle.produto.vlrvenda}">
-	    			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-	    		</p:inputText>
-	    		
-	    		<p:outputLabel value="Estoque" for="estoque"/>
-	    		<p:inputText id="estoque" size="10" maxlength="5"
-                                     value="#{produtoControle.produto.estoque}" />
-	    	</p:panelGrid>
-            
-            
+
+            <p:toolbar style="margin-top: 20px">
+                <p:toolbarGroup>
+                    <p:commandButton value="Novo" actionListener="#{produtoControle.novo}" 
+                                     oncomplete="PF('cadastro').show()" update=":dlgProduto"/>
+                    <p:commandButton value="Alterar" id="botaoAlterar" process="tabProdutos"
+                                     oncomplete="PF('cadastro').show()"
+                                     update=":dlgProduto" />
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:button value="Pesquisa" outcome="/produto/lista" />
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="tabProdutos"
+                         value="#{produtoControle.listar()}"
+                         var="item"
+                         selection="#{produtoControle.produto}"
+                         selectionMode="single" rowKey="#{item.id}"
+                         >
+                <f:facet name="header">
+                    Produtos
+                </f:facet>
+
+                <p:column headerText="Código">
+                    <h:outputText value="#{item.sku}" />
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{item.descricao}" />
+                </p:column>
+
+                <p:column headerText="Estoque">
+                    <h:outputText value="#{item.estoque}" />
+                </p:column>
+                <p:column headerText="Valor de Compra">
+                    <h:outputText value="#{item.vlrcompra}" />
+                </p:column>
+                <p:column headerText="Valor de Venda">
+                    <h:outputText value="#{item.vlrvenda}" />
+                </p:column>
+
+            </p:dataTable>
+
         </h:form>
-    </h:body>
-</html>
+
+        <p:dialog id="dlgProduto" widgetVar="cadastro" modal="true"
+                  header="#{produtoControle.editando ? 'Edição de produto' : 'Novo produto'}">
+            <h:form id="formCadastro">
+                <h:inputText value="#{produtoControle.produto.id}"/>
+                <p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px"
+                             columnClasses="rotulo, campo">
+
+                    <p:outputLabel value="SKU" for="sku"/>
+                    <p:inputText id="sku" size="20" maxlength="20" value="#{produtoControle.produto.sku}" />
+
+                    <p:outputLabel value="Nome" for="nome"/>
+                    <p:inputText id="nome" size="60" maxlength="80" value="#{produtoControle.produto.descricao}"/>
+
+
+                    <p:outputLabel value="Valor unitário" for="valorUnitario"/>
+                    <p:inputText id="valorUnitario" size="10" maxlength="10" styleClass="moeda"
+                                 value="#{produtoControle.produto.vlrvenda}">
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                    </p:inputText>
+
+                    <p:outputLabel value="Estoque" for="estoque"/>
+                    <p:inputText id="estoque" size="10" maxlength="5"
+                                 value="#{produtoControle.produto.estoque}" />
+                </p:panelGrid>
+                <p:commandButton value="Salvar" action="#{produtoControle.salvar()}"
+                                 rendered="#{produtoControle.editando ? 'false' : 'true'}" />
+                <p:commandButton value="Alterar" action="#{produtoControle.alterar()}"
+                                 rendered="#{produtoControle.editando ? 'true' : 'false'}"/>
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+</ui:composition>
+
+
